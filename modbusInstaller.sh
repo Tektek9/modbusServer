@@ -16,6 +16,8 @@ runansroot="ansible-playbook -i $invenFile -K modbus/"
 nm="ansible"
 Fi="file inventory"
 p="playbook"
+host="127.0.0.1"
+port="9999"
 pasangInven=$(echo "Membuat $Fi" && echo "# Modbus Server Inventory" > "$invenFile" && echo "" >> "$invenFile" && echo "[local]" >> "$invenFile" && echo "localhost ansible_connection=local" >> "$invenFile" && echo "[$mds]" >> "$invenFile" && echo "localhost ansible_user=$currUser ansible_ssh_pass=$passwd" >> "$invenFile" && echo "" >> "$invenFile" && echo "[all:vars]" >> "$invenFile" && echo "ansible_python_interpreter=/usr/bin/python3" >> "$invenFile" && echo "" >> "$invenFile")
 
 if [[ -z "$1" ]]; then
@@ -87,11 +89,11 @@ elif [[ "$1" == "-h" ]] || [[ "$1" == "--help" ]] || [[ "$1" == "-c" ]] || [[ "$
           from time import sleep
 
           def main():
-              server = ModbusServer(host='127.0.0.1', port=9999, no_block=True)
+              server = ModbusServer(host='$host', port=$port, no_block=True)
               try:
                   print("Menjalankan server")
                   server.start()
-                  print("Server sedang berjalan pada 127.0.0.1:9999")
+                  print("Server sedang berjalan pada $host:$port")
                   dataLama = DataBank.get_words(0, 1)
                   while True:
                       DataBank.set_words(0, [int(uniform(0, 100))])
