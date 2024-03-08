@@ -1,5 +1,5 @@
 # modbusServer
-Project Modbus TCP Server dengan Ansible
+Project Modbus Server dengan Ansible
 
 Struktur folder setelah diinstall
 ```
