@@ -19,6 +19,7 @@ Untuk panduan biasa baca Readme
 cat Readme
 ```
 
+
 Untuk installasi
 ```
 ./modbusInstaller -i
@@ -27,6 +28,7 @@ atau
 ```
 ./modbusInstaller --install
 ```
+
 
 Untuk menghapus berkas installer
 ```
@@ -37,10 +39,12 @@ atau
 ./modbusInstaller --clear
 ```
 
+
 Untuk mengaktifkan server
 ```
 ./modbusServer.sh run
 ```
+
 
 Untuk mematikan server
 ```
