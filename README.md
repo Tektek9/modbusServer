@@ -1,7 +1,7 @@
 # modbusServer
 TCP Server dengan Ansible
 
-Struktur setelah folder setelah diinstall
+Struktur folder setelah diinstall
 ```
 .
 ├── inventory.ini
