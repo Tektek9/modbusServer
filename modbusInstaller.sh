@@ -6,7 +6,6 @@ passwd=$(cat secret.txt | sed -n '2p' | sed -e 's/pwd=//g' -e 's/"//g')
 mds="modbusServer"
 mts="Modbus TCP Server"
 dpkgconf=$(sudo dpkg --configure -a 2> /dev/null)#!/bin/bash
-
 invenFile="inventory.ini"
 currUser=$(cat secret.txt | sed -n '1p' | sed -e 's/usr=//g' -e 's/"//g')
 passwd=$(cat secret.txt | sed -n '2p' | sed -e 's/pwd=//g' -e 's/"//g')
