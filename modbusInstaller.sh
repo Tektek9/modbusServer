@@ -16,9 +16,8 @@ nm="ansible"
 Fi="file inventory"
 p="playbook"
 host=$(cat secret.txt | sed -n '3p' | sed -e 's/host=//g' -e 's/"//g')
-modport=$(cat secret.txt | sed -n '4p' | sed -e 's/modport=//g' -e 's/"//g')
-newport=$(cat secret.txt | sed -n '5p' | sed -e 's/newport=//g' -e 's/"//g')
-pasangInven=$(echo "Membuat $Fi" && echo "# Modbus Server Inventory" > "$invenFile" && echo "" >> "$invenFile" && echo "[local]" >> "$invenFile" && echo "localhost ansible_connection=local" >> "$invenFile" && echo "[$mds]" >> "$invenFile" && echo "localhost ansible_user=$currUser ansible_ssh_pass=$passwd" >> "$invenFile" && echo "" >> "$invenFile" && echo "[all:vars]" >> "$invenFile" && echo "ansible_python_interpreter=/usr/bin/python3" >> "$invenFile" && echo "" >> "$invenFile")
+modport=$(cat secret.txt | sed -n '4p' | sed -e 's/mport=//g' -e 's/"//g')
+newport=$(cat secret.txt | sed -n '5p' | sed -e 's/nport=//g' -e 's/"//g')
 
 if [[ -z "$1" ]]; then
   echo ''$'\n'Untuk bantuan$'\n'  ./modbusInstaller.sh -h$'\n'  atau$'\n'  ./modbusInstaller.sh --help
@@ -60,7 +59,7 @@ elif [[ "$1" == "-h" ]] || [[ "$1" == "--help" ]] || [[ "$1" == "-c" ]] || [[ "$
 ---
 - name: Menginstal dan menjalankan $mts
   hosts: $mds 
-  become: yes
+  become: no
   become_user: "{{ ansible_user }}"
 
   tasks:
@@ -84,7 +83,7 @@ elif [[ "$1" == "-h" ]] || [[ "$1" == "--help" ]] || [[ "$1" == "-c" ]] || [[ "$
     - name: Membuat script untuk $mts
       copy:
         content: |
-          from pyModbusTCP.server immodport ModbusServer, 502k
+          from pyModbusTCP.server immodport ModbusServer, DataBank
           from random import uniform
           from time import sleep
 
@@ -150,7 +149,17 @@ EOL
     if [ -e "$invenFile" ]; then
       echo "$Fi $nm sudah ada, silahkan cek pada $invenFile"
     else
-      echo "$pasangInven" && echo "$invenFile berhasil dibuat"
+      cd ..
+      if [ "$currUser" == "ROOT" ]; then 
+        becomeUsr="some_user"
+        pasangInven=$(echo "Membuat $Fi" && echo "# Modbus Server Inventory" > "$invenFile" && echo "" >> "$invenFile" && echo "[local]" >> "$invenFile" && echo "localhost ansible_connection=local" >> "$invenFile" && echo -e "\n[$mds]" >> "$invenFile" && echo "localhost ansible_user=$becomeUsr ansible_ssh_pass=$passwd" >> "$invenFile" && echo "" >> "$invenFile" && echo "[all:vars]" >> "$invenFile" && echo "ansible_python_interpreter=/usr/bin/python3" >> "$invenFile" && echo "" >> "$invenFile")
+        echo "$pasangInven" && echo "$invenFile berhasil dibuat"
+      else 
+        becomeUsr="root"; 
+        pasangInven=$(echo "Membuat $Fi" && echo "# Modbus Server Inventory" > "$invenFile" && echo "" >> "$invenFile" && echo "[local]" >> "$invenFile" && echo "localhost ansible_connection=local" >> "$invenFile" && echo -e "\n[$mds]" >> "$invenFile" && echo "localhost ansible_user=$becomeUsr ansible_ssh_pass=$passwd" >> "$invenFile" && echo "" >> "$invenFile" && echo "[all:vars]" >> "$invenFile" && echo "ansible_python_interpreter=/usr/bin/python3" >> "$invenFile" && echo "" >> "$invenFile")
+        echo "$pasangInven" && echo "$invenFile berhasil dibuat"
+      fi
+      cd modbus
     fi
     if [ -e "$smodServer" ]; then
       echo "File $smodServer sudah ada"
@@ -160,7 +169,7 @@ EOL
 ---
 - name: Menghentikan $mts
   hosts: $mds 
-  become: yes 
+  become: no
   become_user: "{{ ansible_user }}"
 
   tasks:
