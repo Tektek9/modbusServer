@@ -183,10 +183,10 @@ elif [[ "$1" == "-h" ]] || [[ "$1" == "--help" ]] || [[ "$1" == "-c" ]] || [[ "$
         echo "Docker berhasil diinstall"
       fi
     else
-      binaryDocker && echo "i"
+      binaryDocker
       dock=$(sudo docker run hello-world &> /dev/null)
       if [ -z "$dock" ]; then
-        binaryDocker && echo "i"
+        binaryDocker
       else
         echo "Docker berhasil diinstall"
       fi
