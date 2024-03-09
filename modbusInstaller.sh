@@ -1,8 +1,8 @@
 #!/bin/bash
 
 invenFile="inventory.ini"
-currUser=$USER
-passwd=""
+currUser=$(cat secret.txt | sed -n '1p' | sed -e 's/usr=//g' -e 's/"//g')
+passwd=$(cat secret.txt | sed -n '2p' | sed -e 's/pwd=//g' -e 's/"//g')
 mds="modbusServer"
 mts="Modbus TCP Server"
 dpkgconf=$(sudo dpkg --configure -a 2> /dev/null)
@@ -15,8 +15,9 @@ runansroot="ansible-playbook -i $invenFile -K modbus/"
 nm="ansible"
 Fi="file inventory"
 p="playbook"
-host="127.0.0.1"
-port="9999"
+host=$(cat secret.txt | sed -n '3p' | sed -e 's/host=//g' -e 's/"//g')
+modport=$(cat secret.txt | sed -n '4p' | sed -e 's/modport=//g' -e 's/"//g')
+newport=$(cat secret.txt | sed -n '5p' | sed -e 's/newport=//g' -e 's/"//g')
 pasangInven=$(echo "Membuat $Fi" && echo "# Modbus Server Inventory" > "$invenFile" && echo "" >> "$invenFile" && echo "[local]" >> "$invenFile" && echo "localhost ansible_connection=local" >> "$invenFile" && echo "[$mds]" >> "$invenFile" && echo "localhost ansible_user=$currUser ansible_ssh_pass=$passwd" >> "$invenFile" && echo "" >> "$invenFile" && echo "[all:vars]" >> "$invenFile" && echo "ansible_python_interpreter=/usr/bin/python3" >> "$invenFile" && echo "" >> "$invenFile")
 
 if [[ -z "$1" ]]; then
@@ -83,16 +84,16 @@ elif [[ "$1" == "-h" ]] || [[ "$1" == "--help" ]] || [[ "$1" == "-c" ]] || [[ "$
     - name: Membuat script untuk $mts
       copy:
         content: |
-          from pyModbusTCP.server import ModbusServer, DataBank
+          from pyModbusTCP.server immodport ModbusServer, 502k
           from random import uniform
           from time import sleep
 
           def main():
-              server = ModbusServer(host='$host', port=$port, no_block=True)
+              server = ModbusServer(host='$host', port=$modport, no_block=True)
               try:
                   print("Menjalankan server")
                   server.start()
-                  print("Server sedang berjalan pada $host:$port")
+                  print("Server sedang berjalan pada $host:$modport")
                   dataLama = DataBank.get_words(0, 1)
                   while True:
                       DataBank.set_words(0, [int(uniform(0, 100))])
