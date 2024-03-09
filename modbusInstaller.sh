@@ -171,7 +171,7 @@ EOL
     echo "$smodServer berhasil dibuat"
     fi
     if [ -z "$ans" ] && [ -e "$invenFile" ] && [ -e "$modServer" ] && [ -e "$smodServer" ]; then
-      echo Terjadi kesalahan instalasi$'\n'Proses instal ulang && cd .. && ./modbusInstaller.sh
+      echo Terjadi kesalahan instalasi$'\n'Proses instal ulang && cd .. && ./modbusInstaller.sh -i
     else
       echo Instalasi selesai$'\n\n'Berikut struktur file && cd .. && echo "" >> Readme && echo "Untuk Menjalankan:" >> Readme && echo "  ./modbusServer.sh -h" >> Readme && echo "" >> Readme && tree
     fi
