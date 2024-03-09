@@ -149,6 +149,7 @@ EOL
     if [ -e "$invenFile" ]; then
       echo "$Fi $nm sudah ada, silahkan cek pada $invenFile"
     else
+      cd ..
       if [ "$currUser" == "ROOT" ]; then 
         becomeUsr="some_user"
         pasangInven=$(echo "Membuat $Fi" && echo "# Modbus Server Inventory" > "$invenFile" && echo "" >> "$invenFile" && echo "[local]" >> "$invenFile" && echo "localhost ansible_connection=local" >> "$invenFile" && echo -e "\n[$mds]" >> "$invenFile" && echo localhost ansible_user=$becomeUsr$'\n'ansible_ssh_pass=$passwd >> "$invenFile" && echo "" >> "$invenFile" && echo "[all:vars]" >> "$invenFile" && echo "ansible_python_interpreter=/usr/bin/python3" >> "$invenFile" && echo "" >> "$invenFile")
@@ -158,6 +159,7 @@ EOL
         pasangInven=$(echo "Membuat $Fi" && echo "# Modbus Server Inventory" > "$invenFile" && echo "" >> "$invenFile" && echo "[local]" >> "$invenFile" && echo "localhost ansible_connection=local" >> "$invenFile" && echo -e "\n[$mds]" >> "$invenFile" && echo localhost ansible_user=$becomeUsr$'\n'ansible_ssh_pass=$passwd >> "$invenFile" && echo "" >> "$invenFile" && echo "[all:vars]" >> "$invenFile" && echo "ansible_python_interpreter=/usr/bin/python3" >> "$invenFile" && echo "" >> "$invenFile")
         echo "$pasangInven" && echo "$invenFile berhasil dibuat"
       fi
+      cd modbus
     fi
     if [ -e "$smodServer" ]; then
       echo "File $smodServer sudah ada"
