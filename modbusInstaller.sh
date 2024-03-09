@@ -10,7 +10,6 @@ ans=$(ansible --version 2> /dev/null)
 modServer="$mds.yml"
 smodServer="stop$mds.yml"
 f="modbus"
-dpkg="dpkg"
 runans="ansible-playbook -i $invenFile modbus/"
 runansroot="ansible-playbook -i $invenFile -K modbus/"
 nm="ansible"
