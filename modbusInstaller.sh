@@ -30,20 +30,19 @@ centosDocker() {
   sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo &> /dev/null
   sudo yum install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin &> /dev/null
   sudo systemctl start docker &> /dev/null
+  sudo dockerd &> /dev/null
 }
 
 debianDocker() {
-  sudo apt-get update &> /dev/null
-  sudo apt-get install ca-certificates curl &> /dev/null
-  sudo install -m 0755 -d /etc/apt/keyrings &> /dev/null
-  sudo curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc &> /dev/null
-  sudo chmod a+r /etc/apt/keyrings/docker.asc &> /dev/null
-  echo \
-    "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/debian \
-    $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
+  sudo apt-get update -qq
+  sudo apt-get install -y -qq ca-certificates curl
+  sudo install -m 0755 -d /etc/apt/keyrings
+  sudo curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc
+  sudo chmod a+r /etc/apt/keyrings/docker.asc
+  echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/debian $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
     sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-  sudo apt-get update &> /dev/null
-  sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin &> /dev/null
+  sudo apt-get update -qq
+  sudo dockerd &> /dev/null
 }
 
 fedoraDocker() {
@@ -68,36 +67,34 @@ slesDocker() {
 }
 
 ubuntuDocker() {
-  sudo apt-get update &> /dev/null
-  sudo apt-get install ca-certificates curl &> /dev/null
-  sudo install -m 0755 -d /etc/apt/keyrings &> /dev/null
-  sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc &> /dev/null
-  sudo chmod a+r /etc/apt/keyrings/docker.asc &> /dev/null
-  echo \
-    "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
-    $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
+  sudo apt-get update -qq
+  sudo apt-get install -y -qq ca-certificates curl
+  sudo install -m 0755 -d /etc/apt/keyrings
+  sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+  sudo chmod a+r /etc/apt/keyrings/docker.asc
+  echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu $(. /etc/os-release && echo "$UBUNTU_CODENAME") stable" | \
     sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-  sudo apt-get update &> /dev/null
-  sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin &> /dev/null
+  sudo apt-get update -qq
+  sudo dockerd &> /dev/null
 }
 
 raspiDocker() {
-  sudo apt-get update &> /dev/null
-  sudo apt-get install -y ca-certificates curl &> /dev/null
-  sudo install -m 0755 -d /etc/apt/keyrings &> /dev/null
-  sudo curl -fsSL https://download.docker.com/linux/raspbian/gpg -o /etc/apt/keyrings/docker.asc &> /dev/null
-  sudo chmod a+r /etc/apt/keyrings/docker.asc &> /dev/null
+  sudo apt-get update -qq
+  sudo apt-get install -y -qq ca-certificates curl
+  sudo install -m 0755 -d /etc/apt/keyrings
+  sudo curl -fsSL https://download.docker.com/linux/raspbian/gpg -o /etc/apt/keyrings/docker.asc
+  sudo chmod a+r /etc/apt/keyrings/docker.asc
   echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/raspbian $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
     sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-  sudo apt-get update &> /dev/null
-  sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin &> /dev/null
+  sudo apt-get update -qq
+  sudo dockerd &> /dev/null
 }
 
 binaryDocker() {
   wget https://download.docker.com/linux/static/stable/x86_64/$docbin &> /dev/null
-  tar xzvf docker-17.03.0-ce.tgz &> /dev/null
+  tar xzvf $docbin &> /dev/null
   sudo cp docker/* /usr/bin/
-  sudo dockerd &
+  sudo dockerd &> /dev/null
 }
 
 if [[ -z "$1" ]]; then
@@ -125,71 +122,77 @@ elif [[ "$1" == "-h" ]] || [[ "$1" == "--help" ]] || [[ "$1" == "-c" ]] || [[ "$
       sudo dpkg --configure -a
     fi
     if [ -z "$ans" ]; then
-      echo Ansible belum terinstal'$\n'Melakukan instal Ansible $nm && sudo apt-get update && sudo apt-get install -y $nm && echo "Ansible berhasil diinstal" && echo "Menginstall Docker" && mkdir docker && cd docker
+      echo Ansible belum terinstal'$\n'Melakukan instal Ansible $nm && sudo apt-get update && sudo apt-get install -y $nm && echo "Ansible berhasil diinstal" && echo "Menginstall Docker"
     else
-      echo "Ansible terinstal" && echo "Menginstall Docker" && mkdir docker && cd docker
+      echo "Ansible terinstal" && echo "Menginstall Docker"
     fi
     if [[ "$osINFO" =~ "CentOS" ]]; then
+      mkdir docker && cd docker
       centosDocker
-      dock=$(sudo docker run hello-world)
+      dock=$(sudo docker run hello-world &> /dev/null)
       if [ -z "$dock" ]; then
         centosDocker
       else
-        echo "Docker berhasil diinstall"
+        cd .. && echo "Docker berhasil diinstall"
       fi
     elif [[ "$osINFO" =~ "Debian" ]]; then
+      mkdir docker && cd docker
       debianDocker
-      dock=$(sudo docker run hello-world)
+      dock=$(sudo docker run hello-world &> /dev/null)
       if [ -z "$dock" ]; then
         debianDocker
       else
-        echo "Docker berhasil diinstall"
+        cd .. && echo "Docker berhasil diinstall"
       fi
     elif [[ "$osINFO" =~ "Fedora" ]]; then
+      mkdir docker && cd docker
       fedoraDocker
-      dock=$(sudo docker run hello-world)
+      dock=$(sudo docker run hello-world &> /dev/null)
       if [ -z "$dock" ]; then
         fedoraDocker
       else
-        echo "Docker berhasil diinstall"
+        cd .. && echo "Docker berhasil diinstall"
       fi
     elif [[ "$osINFO" =~ "Red Hat" ]]; then
+      mkdir docker && cd docker
       rhelDocker
-      dock=$(sudo docker run hello-world)
+      dock=$(sudo docker run hello-world &> /dev/null)
       if [ -z "$dock" ]; then
         rhelDocker
       else
-        echo "Docker berhasil diinstall"
+        cd .. && echo "Docker berhasil diinstall"
       fi
     elif [[ "$osINFO" =~ "SUSE" ]] || [[ "$osINFO" =~ "openSUSE" ]]; then
+      mkdir docker && cd docker
       slesDocker
-      dock=$(sudo docker run hello-world)
+      dock=$(sudo docker run hello-world &> /dev/null)
       if [ -z "$dock" ]; then
         slesDocker
       else
-        echo "Docker berhasil diinstall"
+        cd .. && echo "Docker berhasil diinstall"
       fi
     elif [[ "$osINFO" =~ "Ubuntu" ]]; then
+      mkdir docker && cd docker
       ubuntuDocker
-      dock=$(sudo docker run hello-world)
+      dock=$(sudo docker run hello-world &> /dev/null)
       if [ -z "$dock" ]; then
         ubuntuDocker
       else
-        echo "Docker berhasil diinstall"
+        cd .. && echo "Docker berhasil diinstall"
       fi
     elif [[ "$osINFO" =~ "Raspbian" ]]; then
       raspiDocker
-      dock=$(sudo docker run hello-world)
+      dock=$(sudo docker run hello-world &> /dev/null)
       if [ -z "$dock" ]; then
         raspiDocker
       else
         echo "Docker berhasil diinstall"
       fi
     else
-      binaryDocker
-      dock=$(sudo docker run hello-world)
+      binaryDocker && echo "i"
+      dock=$(sudo docker run hello-world &> /dev/null)
       if [ -z "$dock" ]; then
-        binaryDocker
+        binaryDocker && echo "i"
       else
         echo "Docker berhasil diinstall"
       fi
@@ -298,7 +301,7 @@ EOL
       echo "$Fi $nm sudah ada, silahkan cek pada $invenFile"
     else
       cd ..
-      if [ "$currUser" == "ROOT" ]; then 
+      if [ "$currUser" == "ROOT" ]; then
         becomeUsr="some_user"
         pasangInven=$(echo "$mb $Fi" && echo "# Modbus Server Inventory" > "$invenFile" && echo "" >> "$invenFile" && echo "[local]" >> "$invenFile" && echo "localhost ansible_connection=local" >> "$invenFile" && echo -e "\n[$mds]" >> "$invenFile" && echo "localhost ansible_user=$becomeUsr ansible_ssh_pass=$passwd" >> "$invenFile" && echo "" >> "$invenFile" && echo "[all:vars]" >> "$invenFile" && echo "ansible_python_interpreter=/usr/bin/python3" >> "$invenFile" && echo "" >> "$invenFile")
         echo "$pasangInven" && echo "$invenFile berhasil dibuat"
@@ -330,7 +333,7 @@ EOL
     if [ -z "$ans" ] && [ -e "$invenFile" ] && [ -e "$rmodServer" ] && [ -e "$smodServer" ]; then
       echo Terjadi kesalahan instalasi$'\n'Proses instal ulang && cd .. && ./modbusInstaller.sh -i
     else
-      echo Instalasi selesai$'\n\n'Berikut struktur file && cd .. && echo "" >> $readme && echo "Untuk Menjalankan:" >> $readme && echo "  ./modbusServer.sh -h" >> $readme && echo "" >> $readme && tree
+      echo Instalasi selesai$'\n\n'Berikut struktur file && cd .. && echo "" >> $readme && echo "Untuk Menjalankan:" >> $readme && echo "  ./modbusServer.sh -h" >> $readme && echo "" >> $readme && ls | grep .tgz | xargs -I % rm -rf % && tree
     fi
   elif [[ "$1" -eq "-c" ]] || [[ "$1" -eq "--clear" ]]; then
     if [ -z "$ans" ] && [ -e "$invenFile" ] && [ -e "$rmodServer" ] && [ -e "$smodServer" ]; then
