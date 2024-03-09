@@ -1,20 +1,28 @@
 # modbusServer
-Project Modbus Server dengan Ansible
+Project Modbus Server dengan Ansible & Docker
 
 Struktur folder setelah diinstall
 ```
 .
+├── docker
+│   ├── docker
+│   ├── docker-containerd
+│   ├── docker-containerd-ctr
+│   ├── docker-containerd-shim
+│   ├── dockerd
+│   ├── docker-init
+│   ├── docker-proxy
+│   └── docker-runc
 ├── inventory.ini
 ├── modbus
-│   ├── modbusServer.py
-│   ├── modbusServer.yml
+│   ├── runmodbusServer.yml
 │   └── stopmodbusServer.yml
 ├── modbusInstaller.sh
 ├── modbusServer.sh
 ├── Readme
 └── secret.txt
 
-2 directories, 8 files
+3 directories, 15 files
 ```
 
 Untuk panduan biasa baca Readme
