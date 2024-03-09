@@ -11,7 +11,10 @@ Struktur folder setelah diinstall
 │   └── stopmodbusServer.yml
 ├── modbusInstaller.sh
 ├── modbusServer.sh
-└── Readme
+├── Readme
+└── secret
+
+2 directories, 8 files
 ```
 
 Untuk panduan biasa baca Readme
