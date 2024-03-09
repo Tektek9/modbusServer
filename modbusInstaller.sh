@@ -10,13 +10,14 @@ ans=$(ansible --version 2> /dev/null)
 modServer="$mds.yml"
 rmodServer="run$mds.yml"
 smodServer="stop$mds.yml"
+req="requirements.txt"
 dc="docker"
+df="Dockerfile"
 docbin="docker-17.03.0-ce.tgz"
 readme="Readme"
 f="modbus"
 mb="Membuat"
 runans="ansible-playbook -i $invenFile $f/"
-runansroot="ansible-playbook -i $invenFile -K $f/"
 nm="ansible"
 Fi="file inventory"
 p="playbook"
@@ -29,6 +30,8 @@ centosDocker() {
   sudo yum install -y yum-utils &> /dev/null
   sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo &> /dev/null
   sudo yum install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin &> /dev/null
+  ps aux | grep docker | awk '{ print $2 }' | xargs -I % sudo kill -9 % &> /dev/null
+  echo "Menjalankan docker daemon"
   sudo systemctl start docker &> /dev/null
 }
 
@@ -41,12 +44,17 @@ debianDocker() {
   echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/debian $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
     sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
   sudo apt-get update -qq
+  ps aux | grep docker | awk '{ print $2 }' | xargs -I % sudo kill -9 % &> /dev/null
+  echo "Menjalankan docker daemon"
+  nohup sudo dockerd > /dev/null 2>&1 &
 }
 
 fedoraDocker() {
   sudo dnf -y install dnf-plugins-core &> /dev/null
   sudo dnf config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo &> /dev/null
   sudo dnf install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin &> /dev/null
+  ps aux | grep docker | awk '{ print $2 }' | xargs -I % sudo kill -9 % &> /dev/null
+  echo "Menjalankan docker daemon"
   sudo systemctl start docker &> /dev/null
 }
 
@@ -54,6 +62,8 @@ rhelDocker() {
   sudo yum install -y yum-utils &> /dev/null
   sudo yum-config-manager --add-repo https://download.docker.com/linux/rhel/docker-ce.repo &> /dev/null
   sudo yum install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin &> /dev/null
+  ps aux | grep docker | awk '{ print $2 }' | xargs -I % sudo kill -9 % &> /dev/null
+  echo "Menjalankan docker daemon"
   sudo systemctl start docker &> /dev/null
 }
 
@@ -61,6 +71,8 @@ slesDocker() {
   sudo apt-get update &> /dev/null
   sudo zypper addrepo https://download.docker.com/linux/sles/docker-ce.repo &> /dev/null
   sudo zypper install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin &> /dev/null
+  ps aux | grep docker | awk '{ print $2 }' | xargs -I % sudo kill -9 % &> /dev/null
+  echo "Menjalankan docker daemon"
   sudo systemctl start docker &> /dev/null
 }
 
@@ -73,6 +85,9 @@ ubuntuDocker() {
   echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu $(. /etc/os-release && echo "$UBUNTU_CODENAME") stable" | \
     sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
   sudo apt-get update -qq
+  ps aux | grep docker | awk '{ print $2 }' | xargs -I % sudo kill -9 % &> /dev/null
+  echo "Menjalankan docker daemon"
+  nohup sudo dockerd > /dev/null 2>&1 &
 }
 
 raspiDocker() {
@@ -84,12 +99,19 @@ raspiDocker() {
   echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/raspbian $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
     sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
   sudo apt-get update -qq
+  ps aux | grep docker | awk '{ print $2 }' | xargs -I % sudo kill -9 % &> /dev/null
+  echo "Menjalankan docker daemon"
+  nohup sudo dockerd > /dev/null 2>&1 &
 }
 
 binaryDocker() {
   wget https://download.docker.com/linux/static/stable/x86_64/$docbin &> /dev/null
   tar xzvf $docbin &> /dev/null
   sudo cp docker/* /usr/bin/
+  rm -rf docker/*
+  ps aux | grep docker | awk '{ print $2 }' | xargs -I % sudo kill -9 % &> /dev/null
+  echo "Menjalankan docker daemon"
+  nohup sudo dockerd > /dev/null 2>&1 &
 }
 
 if [[ -z "$1" ]]; then
@@ -98,7 +120,7 @@ elif [[ "$1" == "-h" ]] || [[ "$1" == "--help" ]] || [[ "$1" == "-c" ]] || [[ "$
   if [[ "$1" == "-h" ]] || [[ "$1" == "--help" ]]; then
     echo ""
     echo "Info:"
-    echo "  [ -i / --install ] - Menginstall Modbus Server"
+    echo "  [ -i / --install ] - Menginstal Modbus Server"
     echo "  [ -c / --clear ]   - Menghapus Installer"
     echo "  [ -h / --help ]    - Bantuan"
     echo ""
@@ -116,80 +138,85 @@ elif [[ "$1" == "-h" ]] || [[ "$1" == "--help" ]] || [[ "$1" == "-c" ]] || [[ "$
       sudo dpkg --configure -a
     fi
     if [ -z "$ans" ]; then
-      echo Ansible belum terinstal'$\n'Melakukan instal Ansible $nm && sudo apt-get update && sudo apt-get install -y $nm && echo "Ansible berhasil diinstal" && echo "Menginstall Docker"
+      echo Ansible belum terinstal'$\n'Melakukan instal Ansible $nm && sudo apt-get update && sudo apt-get install -y $nm && echo "Ansible berhasil diinstal" && echo "Menginstal Docker"
     else
-      echo "Ansible terinstal" && echo "Menginstall Docker"
+      echo "Ansible terinstal"
     fi
-    if [[ "$osINFO" =~ "CentOS" ]]; then
-      mkdir docker && cd docker
-      centosDocker
-      dock=$(sudo docker run hello-world &> /dev/null)
-      if [ -z "$dock" ]; then
+    if [[ -z $dc ]]; then
+      echo "Menginstal Docker"
+      if [[ "$osINFO" =~ "CentOS" ]]; then
+        mkdir docker && cd docker
         centosDocker
-      else
-        cd .. && echo "Docker berhasil diinstall"
-      fi
-    elif [[ "$osINFO" =~ "Debian" ]]; then
-      mkdir docker && cd docker
-      debianDocker
-      dock=$(sudo docker run hello-world &> /dev/null)
-      if [ -z "$dock" ]; then
+        dock=$(sudo docker run hello-world &> /dev/null)
+        if [ -z "$dock" ]; then
+          centosDocker
+        else
+          cd .. && echo "Docker berhasil diinstal"
+        fi
+      elif [[ "$osINFO" =~ "Debian" ]]; then
+        mkdir docker && cd docker
         debianDocker
-      else
-        cd .. && echo "Docker berhasil diinstall"
-      fi
-    elif [[ "$osINFO" =~ "Fedora" ]]; then
-      mkdir docker && cd docker
-      fedoraDocker
-      dock=$(sudo docker run hello-world &> /dev/null)
-      if [ -z "$dock" ]; then
+        dock=$(sudo docker run hello-world &> /dev/null)
+        if [ -z "$dock" ]; then
+          debianDocker
+        else
+          cd .. && echo "Docker berhasil diinstal"
+        fi
+      elif [[ "$osINFO" =~ "Fedora" ]]; then
+        mkdir docker && cd docker
         fedoraDocker
-      else
-        cd .. && echo "Docker berhasil diinstall"
-      fi
-    elif [[ "$osINFO" =~ "Red Hat" ]]; then
-      mkdir docker && cd docker
-      rhelDocker
-      dock=$(sudo docker run hello-world &> /dev/null)
-      if [ -z "$dock" ]; then
+        dock=$(sudo docker run hello-world &> /dev/null)
+        if [ -z "$dock" ]; then
+          fedoraDocker
+        else
+          cd .. && echo "Docker berhasil diinstal"
+        fi
+      elif [[ "$osINFO" =~ "Red Hat" ]]; then
+        mkdir docker && cd docker
         rhelDocker
-      else
-        cd .. && echo "Docker berhasil diinstall"
-      fi
-    elif [[ "$osINFO" =~ "SUSE" ]] || [[ "$osINFO" =~ "openSUSE" ]]; then
-      mkdir docker && cd docker
-      slesDocker
-      dock=$(sudo docker run hello-world &> /dev/null)
-      if [ -z "$dock" ]; then
+        dock=$(sudo docker run hello-world &> /dev/null)
+        if [ -z "$dock" ]; then
+          rhelDocker
+        else
+          cd .. && echo "Docker berhasil diinstal"
+        fi
+      elif [[ "$osINFO" =~ "SUSE" ]] || [[ "$osINFO" =~ "openSUSE" ]]; then
+        mkdir docker && cd docker
         slesDocker
-      else
-        cd .. && echo "Docker berhasil diinstall"
-      fi
-    elif [[ "$osINFO" =~ "Ubuntu" ]]; then
-      mkdir docker && cd docker
-      ubuntuDocker
-      dock=$(sudo docker run hello-world &> /dev/null)
-      if [ -z "$dock" ]; then
+        dock=$(sudo docker run hello-world &> /dev/null)
+        if [ -z "$dock" ]; then
+          slesDocker
+        else
+          cd .. && echo "Docker berhasil diinstal"
+        fi
+      elif [[ "$osINFO" =~ "Ubuntu" ]]; then
+        mkdir docker && cd docker
         ubuntuDocker
-      else
-        cd .. && echo "Docker berhasil diinstall"
-      fi
-    elif [[ "$osINFO" =~ "Raspbian" ]]; then
-      raspiDocker
-      dock=$(sudo docker run hello-world &> /dev/null)
-      if [ -z "$dock" ]; then
+        dock=$(sudo docker run hello-world &> /dev/null)
+        if [ -z "$dock" ]; then
+          ubuntuDocker
+        else
+          cd .. && echo "Docker berhasil diinstal"
+        fi
+      elif [[ "$osINFO" =~ "Raspbian" ]]; then
         raspiDocker
+        dock=$(sudo docker run hello-world &> /dev/null)
+        if [ -z "$dock" ]; then
+          raspiDocker
+        else
+          echo "Docker berhasil diinstal"
+        fi
       else
-        echo "Docker berhasil diinstall"
+        binaryDocker
+        dock=$(sudo docker run hello-world &> /dev/null)
+        if [ -z "$dock" ]; then
+          binaryDocker
+        else
+          echo "Docker berhasil diinstal"
+        fi
       fi
     else
-      binaryDocker
-      dock=$(sudo docker run hello-world &> /dev/null)
-      if [ -z "$dock" ]; then
-        binaryDocker
-      else
-        echo "Docker berhasil diinstall"
-      fi
+      echo "Docker sudah terinstal"
     fi
     if [ -e "$f" ]; then
       echo "Folder $f sudah ada" && cd $f && echo "$mb $p $rmodServer"
@@ -215,14 +242,6 @@ elif [[ "$1" == "-h" ]] || [[ "$1" == "--help" ]] || [[ "$1" == "-c" ]] || [[ "$
       loop:
         - python3
         - python3-pip
-
-    - name: Menginstal pymodbus library
-      pip:
-        name: "{{ item }}"
-        executable: pip3
-
-      loop:
-        - pyModbusTCP
 
     - name: $mb script untuk $mts
       copy:
@@ -268,23 +287,37 @@ EOL
       echo "$mb file $mds.sh"
       cd ..
       cat <<EOL > $mds".sh"
-  if [[ -z "\$1" ]]; then
-    echo ''$'\n'Untuk bantuan:$'\n'  ./$mds.sh -h$'\n'  atau$'\n'  ./$mds.sh --help$'\n'
-  elif [[ "\$1" == "run" ]]; then
-    if [[ "$currUser" == "ROOT" ]]; then
-        $runansroot$rmodServer
-    else
-        $runans$rmodServer
-    fi
-  elif [[ "\$1" == "stop" ]]; then
-    if [[ "$currUser" == "ROOT" ]]; then
-        $runansroot$smodServer
-    else
-        $runans$smodServer
-    fi
-  elif [[ "\$1" == "--help" ]] || [[ "\$1" == "-h" ]]; then
-    echo ''$'\n'Untuk penggunaan:$'\n'  $mds.sh run [Untuk run modserver]$'\n'  $mds.sh stop [Untuk stop modserver]$'\n'
+if [[ -z "\$1" ]]; then
+  echo ''$'\n'Untuk bantuan:$'\n'  ./$mds.sh -h$'\n'  atau$'\n'  ./$mds.sh --help$'\n'
+elif [[ "\$1" == "run" ]] && [[ "\$2" == "--port" || "\$2" == "-p" ]]; then
+  if [[ "\$#" -lt 3 ]]; then
+    echo -e "\nSilahkan masukan port\n\nUntuk bantuan:\n  ./modbusServer.sh -h\n  atau\n  ./modbusServer.sh --help"
+  elif [[ "\$#" -eq 3 ]]; then
+    cp modbus/runmodbusServer.yml modbus/cusmodbusServer.yml; sed -i "s/port=502/port=\$3/" modbus/cusmodbusServer.yml
+    custom="ansible-playbook -i inventory.ini modbus/cusmodbusServer.yml"
+    [[ "\$USER" == "root" ]] && custom+=" -K"
+    eval "\$custom"
   fi
+elif [[ "\$1" == "run" ]]; then
+  runstd="$runans$rmodServer"
+  [[ "\$USER" == "root" ]] && runstd+=" -K"
+  eval "\$runstd"
+elif [[ "\$1" == "stop" ]]; then
+  stopstd="$runans$smodServer"
+  [[ "\$USER" == "root" ]] && stopstd+=" -K"
+  eval "\$stopstd"
+  rm -rf modbus/cusmodbusServer.yml
+elif [[ "\$1" == "--help" ]] || [[ "\$1" == "-h" ]]; then
+  echo -e"\n Info:"
+  echo "  [run] - Untuk run modserver"
+  echo "  [run] [-p/--port] [port] - Untuk menjalankan pada port tertentu"
+  echo "  [stop] - Untuk stop modserver"
+  echo -e "\n\nPenggunaan:"
+  echo "  $mds.sh run"
+  echo "  $mds.sh run -p 80"
+  echo "  $mds.sh run --port 999"
+  echo -e "  $mds.sh stop\n"
+fi
 EOL
       chmod +x $mds.sh
       echo "$mds.sh berhasil dibuat"
@@ -294,7 +327,7 @@ EOL
       echo "$Fi $nm sudah ada, silahkan cek pada $invenFile"
     else
       cd ..
-      if [ "$currUser" == "ROOT" ]; then
+      if [ "$currUser" == "root" ]; then
         becomeUsr="some_user"
         pasangInven=$(echo "$mb $Fi" && echo "# Modbus Server Inventory" > "$invenFile" && echo "" >> "$invenFile" && echo "[local]" >> "$invenFile" && echo "localhost ansible_connection=local" >> "$invenFile" && echo -e "\n[$mds]" >> "$invenFile" && echo "localhost ansible_user=$becomeUsr ansible_ssh_pass=$passwd" >> "$invenFile" && echo "" >> "$invenFile" && echo "[all:vars]" >> "$invenFile" && echo "ansible_python_interpreter=/usr/bin/python3" >> "$invenFile" && echo "" >> "$invenFile")
         echo "$pasangInven" && echo "$invenFile berhasil dibuat"
@@ -323,6 +356,35 @@ EOL
 EOL
     echo "$smodServer berhasil dibuat"
     fi
+    cd ..
+    if [  -e "docker" ]; then
+      cd docker/
+    else
+      mkdir docker && cd docker/
+    fi
+    if [ -e "$req" ]; then
+      echo "File $req sudah ada"
+    else
+      echo "$mb $req untuk docker" && echo "pyModbusTCP" > $req
+    fi
+    if [ -e "$df" ]; then
+      echo "File $df sudah ada"
+    else
+      echo "$mb $p $df"
+      cat <<EOL > $df
+FROM python:3.10-slim-bullseye
+
+WORKDIR /app
+
+COPY docker/$req .
+RUN pip install --no-cache-dir -r $req
+
+COPY modbus/$mds.py .
+
+CMD ["python", "$mds.py"]
+EOL
+    echo "$df berhasil dibuat" && docker build -t vmanghnani/modbusserver . &> /dev/null
+    fi
     if [ -z "$ans" ] && [ -e "$invenFile" ] && [ -e "$rmodServer" ] && [ -e "$smodServer" ]; then
       echo Terjadi kesalahan instalasi$'\n'Proses instal ulang && cd .. && ./modbusInstaller.sh -i
     else
@@ -333,6 +395,6 @@ EOL
       echo "Terjadi kesalahan ketika menghapus, mohon jalankan ulang program"
     else
       echo $invenFile$'\n'$mds.sh$'\n'$f$'\n'$readme$'\n'$dc$'\n'$docbin | grep -Ev "Installer" | xargs -I % rm -rf % && echo ''$'\n'Berkas berhasil dihapus
-    fi  
+    fi
   fi
 fi
