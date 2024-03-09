@@ -293,15 +293,10 @@ elif [[ "\$1" == "run" ]] && [[ "\$2" == "--port" || "\$2" == "-p" ]]; then
   if [[ "\$#" -lt 3 ]]; then
     echo -e "\nSilahkan masukan port\n\nUntuk bantuan:\n  ./modbusServer.sh -h\n  atau\n  ./modbusServer.sh --help"
   elif [[ "\$#" -eq 3 ]]; then
-    cp modbus/runmodbusServer.yml modbus/cusmodbusServer.yml; sed -i "s/port=502/port=\$3/" modbus/cusmodbusServer.yml
-    custom="ansible-playbook -i inventory.ini modbus/cusmodbusServer.yml"
-    [[ "\$USER" == "root" ]] && custom+=" -K"
-    eval "\$custom"
+    docker run -d -p \$3:502 --name modbus1 vmanghnani/modbusserver
   fi
 elif [[ "\$1" == "run" ]]; then
-  runstd="$runans$rmodServer"
-  [[ "\$USER" == "root" ]] && runstd+=" -K"
-  eval "\$runstd"
+  docker run -d -p $newport:502 --name modbus1 vmanghnani/modbusserver
 elif [[ "\$1" == "stop" ]]; then
   stopstd="$runans$smodServer"
   [[ "\$USER" == "root" ]] && stopstd+=" -K"
@@ -332,7 +327,7 @@ EOL
         pasangInven=$(echo "$mb $Fi" && echo "# Modbus Server Inventory" > "$invenFile" && echo "" >> "$invenFile" && echo "[local]" >> "$invenFile" && echo "localhost ansible_connection=local" >> "$invenFile" && echo -e "\n[$mds]" >> "$invenFile" && echo "localhost ansible_user=$becomeUsr ansible_ssh_pass=$passwd" >> "$invenFile" && echo "" >> "$invenFile" && echo "[all:vars]" >> "$invenFile" && echo "ansible_python_interpreter=/usr/bin/python3" >> "$invenFile" && echo "" >> "$invenFile")
         echo "$pasangInven" && echo "$invenFile berhasil dibuat"
       else 
-        becomeUsr="root"; 
+        becomeUsr="root";
         pasangInven=$(echo "$mb $Fi" && echo "# Modbus Server Inventory" > "$invenFile" && echo "" >> "$invenFile" && echo "[local]" >> "$invenFile" && echo "localhost ansible_connection=local" >> "$invenFile" && echo -e "\n[$mds]" >> "$invenFile" && echo "localhost ansible_user=$becomeUsr ansible_ssh_pass=$passwd" >> "$invenFile" && echo "" >> "$invenFile" && echo "[all:vars]" >> "$invenFile" && echo "ansible_python_interpreter=/usr/bin/python3" >> "$invenFile" && echo "" >> "$invenFile")
         echo "$pasangInven" && echo "$invenFile berhasil dibuat"
       fi
