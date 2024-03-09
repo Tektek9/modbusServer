@@ -370,7 +370,7 @@ EOL
     if [ -e "$df" ]; then
       echo "File $df sudah ada"
     else
-      echo "$mb $p $df"
+      echo "$mb $df"
       cat <<EOL > $df
 FROM python:3.10-slim-bullseye
 
@@ -383,7 +383,18 @@ COPY modbus/$mds.py .
 
 CMD ["python", "$mds.py"]
 EOL
-    echo "$df berhasil dibuat" && docker build -t vmanghnani/modbusserver . &> /dev/null
+    echo "$df berhasil dibuat"
+    psdoc=$(ps aux | grep -Ev "auto" | grep docker)
+    if [[ "$psdoc" =~ "docker" ]]; then
+      ps aux | grep docker | awk '{ print $2 }' | xargs -I % sudo kill -9 % &> /dev/null
+      nohup sudo dockerd > /dev/null 2>&1 &
+      docker build -t vmanghnani/modbusserver -f Dockerfile . &> /dev/null
+    else
+      echo "Menjalankan docker daemon"
+      nohup sudo dockerd > /dev/null 2>&1 &
+      docker build -t vmanghnani/modbusserver -f Dockerfile . &> /dev/null
+    fi
+    
     fi
     if [ -z "$ans" ] && [ -e "$invenFile" ] && [ -e "$rmodServer" ] && [ -e "$smodServer" ]; then
       echo Terjadi kesalahan instalasi$'\n'Proses instal ulang && cd .. && ./modbusInstaller.sh -i
