@@ -173,7 +173,7 @@ EOL
     if [ -z "$ans" ] && [ -e "$invenFile" ] && [ -e "$modServer" ] && [ -e "$smodServer" ]; then
       echo Terjadi kesalahan instalasi$'\n'Proses instal ulang && cd .. && ./modbusInstaller.sh
     else
-      echo Instalasi selesai$'\n\n'Berikut struktur file && cd .. && echo "" >> Readme && echo "Untuk Menjalankan:" >> Readme && echo "  modbusServer.sh -h" >> Readme && echo "" >> Readme && tree
+      echo Instalasi selesai$'\n\n'Berikut struktur file && cd .. && echo "" >> Readme && echo "Untuk Menjalankan:" >> Readme && echo "  ./modbusServer.sh -h" >> Readme && echo "" >> Readme && tree
     fi
   elif [[ "$1" -eq "-c" ]] || [[ "$1" -eq "--clear" ]]; then
     if [ -z "$ans" ] && [ -e "$invenFile" ] && [ -e "$modServer" ] && [ -e "$smodServer" ]; then
