@@ -83,7 +83,7 @@ elif [[ "$1" == "-h" ]] || [[ "$1" == "--help" ]] || [[ "$1" == "-c" ]] || [[ "$
     - name: Membuat script untuk $mts
       copy:
         content: |
-          from pyModbusTCP.server immodport ModbusServer, 502k
+          from pyModbusTCP.server immodport ModbusServer, DataBank
           from random import uniform
           from time import sleep
 
