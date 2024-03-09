@@ -30,7 +30,6 @@ centosDocker() {
   sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo &> /dev/null
   sudo yum install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin &> /dev/null
   sudo systemctl start docker &> /dev/null
-  sudo dockerd &> /dev/null
 }
 
 debianDocker() {
@@ -42,7 +41,6 @@ debianDocker() {
   echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/debian $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
     sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
   sudo apt-get update -qq
-  sudo dockerd &> /dev/null
 }
 
 fedoraDocker() {
@@ -75,7 +73,6 @@ ubuntuDocker() {
   echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu $(. /etc/os-release && echo "$UBUNTU_CODENAME") stable" | \
     sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
   sudo apt-get update -qq
-  sudo dockerd &> /dev/null
 }
 
 raspiDocker() {
@@ -87,14 +84,12 @@ raspiDocker() {
   echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/raspbian $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
     sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
   sudo apt-get update -qq
-  sudo dockerd &> /dev/null
 }
 
 binaryDocker() {
   wget https://download.docker.com/linux/static/stable/x86_64/$docbin &> /dev/null
   tar xzvf $docbin &> /dev/null
   sudo cp docker/* /usr/bin/
-  sudo dockerd &> /dev/null
 }
 
 if [[ -z "$1" ]]; then
@@ -196,7 +191,6 @@ elif [[ "$1" == "-h" ]] || [[ "$1" == "--help" ]] || [[ "$1" == "-c" ]] || [[ "$
         echo "Docker berhasil diinstall"
       fi
     fi
-    echo "User saat ini: $currUser"
     if [ -e "$f" ]; then
       echo "Folder $f sudah ada" && cd $f && echo "$mb $p $rmodServer"
     else
