@@ -12,7 +12,7 @@ Struktur folder setelah diinstall
 ├── modbusInstaller.sh
 ├── modbusServer.sh
 ├── Readme
-└── secret
+└── secret.txt
 
 2 directories, 8 files
 ```
