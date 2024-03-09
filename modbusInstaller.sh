@@ -10,7 +10,6 @@ ans=$(ansible --version 2> /dev/null)
 modServer="$mds.yml"
 smodServer="stop$mds.yml"
 f="modbus"
-dpkg="dpkg"
 runans="ansible-playbook -i $invenFile modbus/"
 runansroot="ansible-playbook -i $invenFile -K modbus/"
 nm="ansible"
@@ -171,7 +170,7 @@ EOL
     echo "$smodServer berhasil dibuat"
     fi
     if [ -z "$ans" ] && [ -e "$invenFile" ] && [ -e "$modServer" ] && [ -e "$smodServer" ]; then
-      echo Terjadi kesalahan instalasi$'\n'Proses instal ulang && cd .. && ./modbusInstaller.sh
+      echo Terjadi kesalahan instalasi$'\n'Proses instal ulang && cd .. && ./modbusInstaller.sh -i
     else
       echo Instalasi selesai$'\n\n'Berikut struktur file && cd .. && echo "" >> Readme && echo "Untuk Menjalankan:" >> Readme && echo "  ./modbusServer.sh -h" >> Readme && echo "" >> Readme && tree
     fi
