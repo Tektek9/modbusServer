@@ -33,6 +33,20 @@ host=$hosts
 modport=$mport
 newport=$nport
 
+export docbin
+export image
+export df
+export com
+export req
+export invenFile
+export rmodServer
+export smodServer
+export currUser
+export passwd
+export host
+export modport
+export newport
+
 if [[ -z "$1" ]]; then
     echo ''$'\n'Untuk bantuan$'\n'  ./$file12 -h$'\n'  atau$'\n'  ./$file12 --help
 elif [[ "$1" == "-h" ]] || [[ "$1" == "--help" ]] || [[ "$1" == "-c" ]] || [[ "$1" == "--clear" ]] || [[ "$1" == "-i" ]] || [[ "$1" == "--install" ]]; then
