@@ -147,7 +147,7 @@ elif [[ "$1" == "-h" ]] || [[ "$1" == "--help" ]] || [[ "$1" == "-c" ]] || [[ "$
     echo ""
     echo "Info:"
     echo "  [ -i / --install ] - Menginstal Modbus Server"
-    echo "  [ -c / --clear ]   - Menghapus Installer"
+    echo "  [ -c / --clear ]   - Menghapus Berkas Modbus Server"
     echo "  [ -h / --help ]    - Bantuan"
     echo ""
     echo "Penggunaan:"
@@ -315,10 +315,10 @@ EOL
   become_user: "{{ ansible_user }}"
 
   tasks:
-    - name: Menjalankan Docker Compose untuk $mts
-      shell: "docker {{ lookup('env', 'PWD') }}/docker/docker-compose up -d"
-      async: 0
-      poll: 0
+    - name: Menjalankan Docker Compose
+      command: "docker-compose up -d"
+      args:
+        chdir: /$currUser/docker
 EOL
     echo "$rmodServer berhasil dibuat"
     fi
@@ -401,9 +401,10 @@ EOL
   become_user: "{{ ansible_user }}"
 
   tasks:
-    - name: Menghentikan Docker Compose untuk $mts
-      shell: "docker {{ lookup('env', 'PWD') }}/docker/docker-compose down -d"
-      ignore_errors: true
+    - name: Menjalankan Docker Compose
+      command: "docker-compose down"
+      args:
+        chdir: /$currUser/docker
 EOL
     echo "$smodServer berhasil dibuat"
     fi
