@@ -25,11 +25,6 @@ Struktur folder setelah diinstall (BELUM DIUPDATE)
 ├── app.py
 └── requirement.txt
 ```
-
-Untuk panduan biasa baca Readme
-```
-cat README.md
-```
 <br />
 
 Server Side
