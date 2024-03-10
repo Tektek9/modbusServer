@@ -20,8 +20,10 @@ Struktur folder setelah diinstall
 │   └── stopmodbusServer.yml
 ├── modbusInstaller.sh
 ├── modbusServer.sh
-├── Readme
+├── README.md
 └── secret.txt
+└── app.py
+└── requirement.txt
 ```
 
 Untuk panduan biasa baca Readme
