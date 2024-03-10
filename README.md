@@ -74,10 +74,12 @@ Client Side
 =
 
 
+Install requirement
 ```
 pip install -r requirements.txt
 ```
 
+Jalankan Program
 ```
 python app.py
 ```
