@@ -30,7 +30,7 @@ Untuk panduan biasa baca Readme
 ```
 cat README.md
 ```
-
+<br />
 
 Server Side
 =
@@ -65,10 +65,7 @@ Untuk mematikan server
 ```
 ./modbusServer.sh stop
 ```
-
-
-
-
+<br />
 
 Client Side
 =
@@ -83,9 +80,7 @@ Jalankan Program
 ```
 python app.py
 ```
-
-
-
+<br />
 Prototype Desain Program
 ![image](https://github.com/Tektek9/modbusServer/assets/40711562/8aa396c0-1574-4734-bb5f-aff68c1eb5e8)
 
