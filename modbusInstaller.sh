@@ -122,10 +122,10 @@ elif [[ "$1" == "-h" ]] || [[ "$1" == "--help" ]] || [[ "$1" == "-c" ]] || [[ "$
           echo "Docker berhasil diinstal"
         fi
       else
-        binaryDocker
+        binaryDocker "$docbin"
         dock=$(echo "$cekdoc")
         if [ -z "$dock" ]; then
-          binaryDocker
+          binaryDocker "$docbin"
         else
           echo "Docker berhasil diinstal"
         fi
