@@ -6,7 +6,7 @@ Project Modbus Server
 
 Note: ONPROGRESS
 
-Struktur folder setelah diinstall
+Struktur folder setelah diinstall (BELUM DIUPDATE)
 ```
 .
 ├── docker
