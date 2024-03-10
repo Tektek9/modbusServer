@@ -9,12 +9,15 @@ nm="ansible"
 Fi="file inventory"
 p="playbook"
 
+source func.ini
+
 image=$(cat config.ini | grep pkg1= | grep -o '"[^"]*"' | sed 's/"//g')
 docbin=$(cat config.ini | grep pkg2= | grep -o '"[^"]*"' | sed 's/"//g')
 osINFO=$(cat config.ini | grep check1= | grep -o '"[^"]*"' | sed 's/"//g')
 dpkgconf=$(cat config.ini | grep check2= | grep -o '"[^"]*"' | sed 's/"//g')
 ans=$(cat config.ini | grep check3= | grep -o '"[^"]*"' | sed 's/"//g')
 dcom=$(cat config.ini | grep check4= | grep -o '"[^"]*"' | sed 's/"//g')
+cekdoc=$(cat config.ini | grep check5= | grep -o '"[^"]*"' | sed 's/"//g')
 df=$(cat config.ini | grep file1= | grep -o '"[^"]*"' | sed 's/"//g')
 com=$(cat config.ini | grep file2= | grep -o '"[^"]*"' | sed 's/"//g')
 req=$(cat config.ini | grep file3= | grep -o '"[^"]*"' | sed 's/"//g')
@@ -27,118 +30,6 @@ passwd=$(cat secret.txt | sed -n '2p' | sed -e 's/pwd=//g' -e 's/"//g')
 host=$(cat secret.txt | sed -n '3p' | sed -e 's/host=//g' -e 's/"//g')
 modport=$(cat secret.txt | sed -n '4p' | sed -e 's/mport=//g' -e 's/"//g')
 newport=$(cat secret.txt | sed -n '5p' | sed -e 's/nport=//g' -e 's/"//g')
-
-centosDocker() {
-  sudo yum install -y yum-utils &> /dev/null
-  sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo &> /dev/null
-  sudo yum install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin &> /dev/null
-  ps aux | grep docker | awk '{ print $2 }' | xargs -I % sudo kill -9 % &> /dev/null
-  echo "Menjalankan docker daemon"
-  sudo systemctl start docker &> /dev/null
-}
-
-debianDocker() {
-  sudo apt-get update -qq
-  sudo apt-get install -y -qq ca-certificates curl
-  sudo install -m 0755 -d /etc/apt/keyrings
-  sudo curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc
-  sudo chmod a+r /etc/apt/keyrings/docker.asc
-  echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/debian $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
-    sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-  sudo apt-get update -qq
-  ps aux | grep docker | awk '{ print $2 }' | xargs -I % sudo kill -9 % &> /dev/null
-  echo "Membuat docker daemon"
-  echo -e "[Unit]\nDescription=Docker Application Container Engine\nDocumentation=https://docs.docker.com\nAfter=network-online.target docker.socket firewalld.service containerd.service time-set.target\nWants=network-online.target containerd.service\nRequires=docker.socket\n\n[Service]\nType=notify\nExecStart=/usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock\nExecReload=/bin/kill -s HUP $MAINPID\nTimeoutStartSec=0\nRestartSec=2\nRestart=always\nStartLimitBurst=3\nStartLimitInterval=60s\nLimitNPROC=infinity\nLimitCORE=infinity\nTasksMax=infinity\nDelegate=yes\nKillMode=process\nOOMScoreAdjust=-500\n\n[Install]\nWantedBy=multi-user.target" > /etc/systemd/system/docker.service
-  echo -e "[Unit]\nDescription=Docker Socket for the API\nPartOf=docker.service\n\n[Socket]\nListenStream=/var/run/docker.sock\nSocketMode=0660\nSocketUser=root\nSocketGroup=docker\n\n[Install]\nWantedBy=sockets.target" > /usr/lib/systemd/system/docker.socket
-  sudo systemctl enable docker &> /dev/null
-  sudo systemctl daemon-reload &> /dev/null
-  echo "Menjalankan docker daemon"
-  systemctl start docker.socket &> /dev/null
-  sudo systemctl restart docker &> /dev/null
-}
-
-fedoraDocker() {
-  sudo dnf -y install dnf-plugins-core &> /dev/null
-  sudo dnf config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo &> /dev/null
-  sudo dnf install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin &> /dev/null
-  ps aux | grep docker | awk '{ print $2 }' | xargs -I % sudo kill -9 % &> /dev/null
-  echo "Menjalankan docker daemon"
-  sudo systemctl start docker &> /dev/null
-}
-
-rhelDocker() {
-  sudo yum install -y yum-utils &> /dev/null
-  sudo yum-config-manager --add-repo https://download.docker.com/linux/rhel/docker-ce.repo &> /dev/null
-  sudo yum install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin &> /dev/null
-  ps aux | grep docker | awk '{ print $2 }' | xargs -I % sudo kill -9 % &> /dev/null
-  echo "Menjalankan docker daemon"
-  sudo systemctl start docker &> /dev/null
-}
-
-slesDocker() {
-  sudo apt-get update &> /dev/null
-  sudo zypper addrepo https://download.docker.com/linux/sles/docker-ce.repo &> /dev/null
-  sudo zypper install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin &> /dev/null
-  ps aux | grep docker | awk '{ print $2 }' | xargs -I % sudo kill -9 % &> /dev/null
-  echo "Menjalankan docker daemon"
-  sudo systemctl start docker &> /dev/null
-}
-
-ubuntuDocker() {
-  sudo apt-get update -qq
-  sudo apt-get install -y -qq ca-certificates curl
-  sudo install -m 0755 -d /etc/apt/keyrings
-  sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
-  sudo chmod a+r /etc/apt/keyrings/docker.asc
-  echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu $(. /etc/os-release && echo "$UBUNTU_CODENAME") stable" | \
-    sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-  sudo apt-get update -qq
-  ps aux | grep docker | awk '{ print $2 }' | xargs -I % sudo kill -9 % &> /dev/null
-  echo "Membuat docker daemon"
-  echo -e "[Unit]\nDescription=Docker Application Container Engine\nDocumentation=https://docs.docker.com\nAfter=network-online.target docker.socket firewalld.service containerd.service time-set.target\nWants=network-online.target containerd.service\nRequires=docker.socket\n\n[Service]\nType=notify\nExecStart=/usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock\nExecReload=/bin/kill -s HUP $MAINPID\nTimeoutStartSec=0\nRestartSec=2\nRestart=always\nStartLimitBurst=3\nStartLimitInterval=60s\nLimitNPROC=infinity\nLimitCORE=infinity\nTasksMax=infinity\nDelegate=yes\nKillMode=process\nOOMScoreAdjust=-500\n\n[Install]\nWantedBy=multi-user.target" > /etc/systemd/system/docker.service
-  echo -e "[Unit]\nDescription=Docker Socket for the API\nPartOf=docker.service\n\n[Socket]\nListenStream=/var/run/docker.sock\nSocketMode=0660\nSocketUser=root\nSocketGroup=docker\n\n[Install]\nWantedBy=sockets.target" > /usr/lib/systemd/system/docker.socket
-  sudo systemctl enable docker &> /dev/null
-  sudo systemctl daemon-reload &> /dev/null
-  echo "Menjalankan docker daemon"
-  systemctl start docker.socket &> /dev/null
-  sudo systemctl restart docker &> /dev/null
-}
-
-raspiDocker() {
-  sudo apt-get update -qq
-  sudo apt-get install -y -qq ca-certificates curl
-  sudo install -m 0755 -d /etc/apt/keyrings
-  sudo curl -fsSL https://download.docker.com/linux/raspbian/gpg -o /etc/apt/keyrings/docker.asc
-  sudo chmod a+r /etc/apt/keyrings/docker.asc
-  echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/raspbian $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
-    sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-  sudo apt-get update -qq
-  ps aux | grep docker | awk '{ print $2 }' | xargs -I % sudo kill -9 % &> /dev/null
-  echo "Membuat docker daemon"
-  echo -e "[Unit]\nDescription=Docker Application Container Engine\nDocumentation=https://docs.docker.com\nAfter=network-online.target docker.socket firewalld.service containerd.service time-set.target\nWants=network-online.target containerd.service\nRequires=docker.socket\n\n[Service]\nType=notify\nExecStart=/usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock\nExecReload=/bin/kill -s HUP $MAINPID\nTimeoutStartSec=0\nRestartSec=2\nRestart=always\nStartLimitBurst=3\nStartLimitInterval=60s\nLimitNPROC=infinity\nLimitCORE=infinity\nTasksMax=infinity\nDelegate=yes\nKillMode=process\nOOMScoreAdjust=-500\n\n[Install]\nWantedBy=multi-user.target" > /etc/systemd/system/docker.service
-  echo -e "[Unit]\nDescription=Docker Socket for the API\nPartOf=docker.service\n\n[Socket]\nListenStream=/var/run/docker.sock\nSocketMode=0660\nSocketUser=root\nSocketGroup=docker\n\n[Install]\nWantedBy=sockets.target" > /usr/lib/systemd/system/docker.socket
-  sudo systemctl enable docker &> /dev/null
-  sudo systemctl daemon-reload &> /dev/null
-  echo "Menjalankan docker daemon"
-  systemctl start docker.socket &> /dev/null
-  sudo systemctl restart docker &> /dev/null
-}
-
-binaryDocker() {
-  wget https://download.docker.com/linux/static/stable/x86_64/$docbin &> /dev/null
-  tar xzvf $docbin &> /dev/null
-  sudo cp docker/* /usr/bin/
-  rm -rf docker/*
-  ps aux | grep docker | awk '{ print $2 }' | xargs -I % sudo kill -9 % &> /dev/null
-  echo "Membuat docker daemon"
-  echo -e "[Unit]\nDescription=Docker Application Container Engine\nDocumentation=https://docs.docker.com\nAfter=network-online.target docker.socket firewalld.service containerd.service time-set.target\nWants=network-online.target containerd.service\nRequires=docker.socket\n\n[Service]\nType=notify\nExecStart=/usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock\nExecReload=/bin/kill -s HUP $MAINPID\nTimeoutStartSec=0\nRestartSec=2\nRestart=always\nStartLimitBurst=3\nStartLimitInterval=60s\nLimitNPROC=infinity\nLimitCORE=infinity\nTasksMax=infinity\nDelegate=yes\nKillMode=process\nOOMScoreAdjust=-500\n\n[Install]\nWantedBy=multi-user.target" > /etc/systemd/system/docker.service
-  echo -e "[Unit]\nDescription=Docker Socket for the API\nPartOf=docker.service\n\n[Socket]\nListenStream=/var/run/docker.sock\nSocketMode=0660\nSocketUser=root\nSocketGroup=docker\n\n[Install]\nWantedBy=sockets.target" > /usr/lib/systemd/system/docker.socket
-  sudo systemctl enable docker &> /dev/null
-  sudo systemctl daemon-reload &> /dev/null
-  echo "Menjalankan docker daemon"
-  systemctl start docker.socket &> /dev/null
-  sudo systemctl restart docker &> /dev/null
-}
 
 if [[ -z "$1" ]]; then
     echo ''$'\n'Untuk bantuan$'\n'  ./modbusInstaller.sh -h$'\n'  atau$'\n'  ./modbusInstaller.sh --help
@@ -172,7 +63,7 @@ elif [[ "$1" == "-h" ]] || [[ "$1" == "--help" ]] || [[ "$1" == "-c" ]] || [[ "$
       echo "Menginstal Docker"
       if [[ "$osINFO" =~ "CentOS" ]]; then
         centosDocker
-        dock=$(sudo docker run hello-world &> /dev/null)
+        dock=$(echo "$cekdoc")
         if [ -z "$dock" ]; then
           centosDocker
         else
@@ -180,7 +71,7 @@ elif [[ "$1" == "-h" ]] || [[ "$1" == "--help" ]] || [[ "$1" == "-c" ]] || [[ "$
         fi
       elif [[ "$osINFO" =~ "Debian" ]]; then
         debianDocker
-        dock=$(sudo docker run hello-world &> /dev/null)
+        dock=$(echo "$cekdoc")
         if [ -z "$dock" ]; then
           debianDocker
         else
@@ -188,7 +79,7 @@ elif [[ "$1" == "-h" ]] || [[ "$1" == "--help" ]] || [[ "$1" == "-c" ]] || [[ "$
         fi
       elif [[ "$osINFO" =~ "Fedora" ]]; then
         fedoraDocker
-        dock=$(sudo docker run hello-world &> /dev/null)
+        dock=$(echo "$cekdoc")
         if [ -z "$dock" ]; then
           fedoraDocker
         else
@@ -196,7 +87,7 @@ elif [[ "$1" == "-h" ]] || [[ "$1" == "--help" ]] || [[ "$1" == "-c" ]] || [[ "$
         fi
       elif [[ "$osINFO" =~ "Red Hat" ]]; then
         rhelDocker
-        dock=$(sudo docker run hello-world &> /dev/null)
+        dock=$(echo "$cekdoc")
         if [ -z "$dock" ]; then
           rhelDocker
         else
@@ -204,7 +95,7 @@ elif [[ "$1" == "-h" ]] || [[ "$1" == "--help" ]] || [[ "$1" == "-c" ]] || [[ "$
         fi
       elif [[ "$osINFO" =~ "SUSE" ]] || [[ "$osINFO" =~ "openSUSE" ]]; then
         slesDocker
-        dock=$(sudo docker run hello-world &> /dev/null)
+        dock=$(echo "$cekdoc")
         if [ -z "$dock" ]; then
           slesDocker
         else
@@ -212,7 +103,7 @@ elif [[ "$1" == "-h" ]] || [[ "$1" == "--help" ]] || [[ "$1" == "-c" ]] || [[ "$
         fi
       elif [[ "$osINFO" =~ "Ubuntu" ]]; then
         ubuntuDocker
-        dock=$(sudo docker run hello-world &> /dev/null)
+        dock=$(echo "$cekdoc")
         if [ -z "$dock" ]; then
           ubuntuDocker
         else
@@ -220,7 +111,7 @@ elif [[ "$1" == "-h" ]] || [[ "$1" == "--help" ]] || [[ "$1" == "-c" ]] || [[ "$
         fi
       elif [[ "$osINFO" =~ "Raspbian" ]]; then
         raspiDocker
-        dock=$(sudo docker run hello-world &> /dev/null)
+        dock=$(echo "$cekdoc")
         if [ -z "$dock" ]; then
           raspiDocker
         else
@@ -228,7 +119,7 @@ elif [[ "$1" == "-h" ]] || [[ "$1" == "--help" ]] || [[ "$1" == "-c" ]] || [[ "$
         fi
       else
         binaryDocker
-        dock=$(sudo docker run hello-world &> /dev/null)
+        dock=$(echo "$cekdoc")
         if [ -z "$dock" ]; then
           binaryDocker
         else
@@ -465,24 +356,16 @@ EOL
       echo "Docker Compose sudah terinstal"
     else
       echo "Menginstal Docker Compose"
-      curl -SL https://github.com/docker/compose/releases/download/v2.24.7/docker-compose-linux-x86_64 -o /usr/local/bin/docker-compose &> /dev/null      
-      sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose 2> /dev/null
-      chmod +x /usr/bin/docker-compose
+      dockerCompose
       echo "Instal Docker Compose selesai"
     fi
     psdoc=$(ps aux | grep -Ev "auto" | grep docker)
     if [[ "$psdoc" =~ "docker" ]]; then
       ps aux | grep docker | awk '{ print $2 }' | xargs -I % sudo kill -9 % &> /dev/null
-      nohup sudo dockerd > /dev/null 2>&1 &
-      docker pull $image &> /dev/null
-      echo "Proses Build Image"
-      docker build -t $image -f Dockerfile . &> /dev/null
+      dockerDaemon
     else
       echo "Menjalankan docker daemon"
-      nohup sudo dockerd > /dev/null 2>&1 &
-      docker pull $image &> /dev/null
-      echo "Proses Build Image"
-      docker build -t $image -f Dockerfile . &> /dev/null
+      dockerDaemon
     fi
     if [ -z "$ans" ] && [ -e "$invenFile" ] && [ -e "$rmodServer" ] && [ -e "$smodServer" ]; then
       echo Terjadi kesalahan instalasi$'\n'Proses instal ulang && cd .. && ./modbusInstaller.sh -i
