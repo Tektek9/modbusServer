@@ -62,6 +62,7 @@ Untuk mematikan server
 
 
 Prototype Desain Program
-![image](https://github.com/Tektek9/modbusServer/assets/40711562/b971315b-0b13-4e9a-9cbd-61fc53c3c747)
+![image](https://github.com/Tektek9/modbusServer/assets/40711562/d9a2f9a9-ae1e-4d03-b479-6f886bafadf7)
+
 
 
