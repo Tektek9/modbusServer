@@ -47,7 +47,9 @@ debianDocker() {
   sudo apt-get update -qq
   ps aux | grep docker | awk '{ print $2 }' | xargs -I % sudo kill -9 % &> /dev/null
   echo "Menjalankan docker daemon"
-  nohup sudo dockerd > /dev/null 2>&1 &
+  echo -e "[Unit]\nDescription=Docker Application Container Engine\nDocumentation=https://docs.docker.com\nAfter=network-online.target docker.socket firewalld.service containerd.service time-set.target\nWants=network-online.target containerd.service\nRequires=docker.socket\n\n\n[Service]\nType=notify\nExecStart=/usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock\nExecReload=/bin/kill -s HUP $MAINPID\nTimeoutStartSec=0\nRestartSec=2\nRestart=always\nStartLimitBurst=3\nStartLimitInterval=60s\nLimitNPROC=infinity\nLimitCORE=infinity\nTasksMax=infinity\nDelegate=yes\nKillMode=process\nOOMScoreAdjust=-500\n\n\n[Install]\nWantedBy=multi-user.target" > /etc/systemd/system/docker.service
+  sudo systemctl daemon-reload &> /dev/null
+  sudo systemctl restart docker &> /dev/null
 }
 
 fedoraDocker() {
@@ -88,7 +90,9 @@ ubuntuDocker() {
   sudo apt-get update -qq
   ps aux | grep docker | awk '{ print $2 }' | xargs -I % sudo kill -9 % &> /dev/null
   echo "Menjalankan docker daemon"
-  nohup sudo dockerd > /dev/null 2>&1 &
+  echo -e "[Unit]\nDescription=Docker Application Container Engine\nDocumentation=https://docs.docker.com\nAfter=network-online.target docker.socket firewalld.service containerd.service time-set.target\nWants=network-online.target containerd.service\nRequires=docker.socket\n\n\n[Service]\nType=notify\nExecStart=/usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock\nExecReload=/bin/kill -s HUP $MAINPID\nTimeoutStartSec=0\nRestartSec=2\nRestart=always\nStartLimitBurst=3\nStartLimitInterval=60s\nLimitNPROC=infinity\nLimitCORE=infinity\nTasksMax=infinity\nDelegate=yes\nKillMode=process\nOOMScoreAdjust=-500\n\n\n[Install]\nWantedBy=multi-user.target" > /etc/systemd/system/docker.service
+  sudo systemctl daemon-reload &> /dev/null
+  sudo systemctl restart docker &> /dev/null
 }
 
 raspiDocker() {
@@ -102,7 +106,9 @@ raspiDocker() {
   sudo apt-get update -qq
   ps aux | grep docker | awk '{ print $2 }' | xargs -I % sudo kill -9 % &> /dev/null
   echo "Menjalankan docker daemon"
-  nohup sudo dockerd > /dev/null 2>&1 &
+  echo -e "[Unit]\nDescription=Docker Application Container Engine\nDocumentation=https://docs.docker.com\nAfter=network-online.target docker.socket firewalld.service containerd.service time-set.target\nWants=network-online.target containerd.service\nRequires=docker.socket\n\n\n[Service]\nType=notify\nExecStart=/usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock\nExecReload=/bin/kill -s HUP $MAINPID\nTimeoutStartSec=0\nRestartSec=2\nRestart=always\nStartLimitBurst=3\nStartLimitInterval=60s\nLimitNPROC=infinity\nLimitCORE=infinity\nTasksMax=infinity\nDelegate=yes\nKillMode=process\nOOMScoreAdjust=-500\n\n\n[Install]\nWantedBy=multi-user.target" > /etc/systemd/system/docker.service
+  sudo systemctl daemon-reload &> /dev/null
+  sudo systemctl restart docker &> /dev/null
 }
 
 binaryDocker() {
@@ -112,7 +118,9 @@ binaryDocker() {
   rm -rf docker/*
   ps aux | grep docker | awk '{ print $2 }' | xargs -I % sudo kill -9 % &> /dev/null
   echo "Menjalankan docker daemon"
-  nohup sudo dockerd > /dev/null 2>&1 &
+  echo -e "[Unit]\nDescription=Docker Application Container Engine\nDocumentation=https://docs.docker.com\nAfter=network-online.target docker.socket firewalld.service containerd.service time-set.target\nWants=network-online.target containerd.service\nRequires=docker.socket\n\n\n[Service]\nType=notify\nExecStart=/usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock\nExecReload=/bin/kill -s HUP $MAINPID\nTimeoutStartSec=0\nRestartSec=2\nRestart=always\nStartLimitBurst=3\nStartLimitInterval=60s\nLimitNPROC=infinity\nLimitCORE=infinity\nTasksMax=infinity\nDelegate=yes\nKillMode=process\nOOMScoreAdjust=-500\n\n\n[Install]\nWantedBy=multi-user.target" > /etc/systemd/system/docker.service
+  sudo systemctl daemon-reload &> /dev/null
+  sudo systemctl restart docker &> /dev/null
 }
 
 if [[ -z "$1" ]]; then
@@ -152,7 +160,7 @@ elif [[ "$1" == "-h" ]] || [[ "$1" == "--help" ]] || [[ "$1" == "-c" ]] || [[ "$
         if [ -z "$dock" ]; then
           centosDocker
         else
-          cd .. && echo "Docker berhasil diinstal"
+          cd .. && echo "Docker berhasil diinstal" && docker ps -a | awk '{ print $1 }' | sed -n '1!p' | xargs -I % docker rm -f %
         fi
       elif [[ "$osINFO" =~ "Debian" ]]; then
         mkdir docker && cd docker
@@ -372,7 +380,7 @@ FROM python:3.10-slim-bullseye
 
 WORKDIR /app
 
-COPY docker/$req .
+COPY $req .
 RUN pip install --no-cache-dir -r $req
 
 COPY modbus/$mds.py .
