@@ -10,7 +10,7 @@ Struktur folder setelah diinstall
 │   └── requirements.txt
 ├── inventory.ini
 ├── modbus
-│   ├── modbusServer.py
+│   ├── modbusServer.yml
 │   ├── runmodbusServer.yml
 │   └── stopmodbusServer.yml
 ├── modbusInstaller.sh
