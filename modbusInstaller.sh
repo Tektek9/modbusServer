@@ -316,9 +316,7 @@ EOL
 
   tasks:
     - name: Menjalankan Docker Compose
-      command: "docker-compose up -d"
-      args:
-        chdir: /$currUser/docker
+      command: "cd /$curruser/docker && docker-compose up -d"
 EOL
     echo "$rmodServer berhasil dibuat"
     fi
@@ -334,16 +332,18 @@ elif [[ "\$1" == "run" ]] && [[ "\$2" == "--port" || "\$2" == "-p" ]]; then
   if [[ "\$#" -lt 3 ]]; then
     echo -e "\nSilahkan masukan port\n\nUntuk bantuan:\n  ./modbusServer.sh -h\n  atau\n  ./modbusServer.sh --help"
   elif [[ "\$#" -eq 3 ]]; then
+    py="ansible-playbook -i inventory.ini modbus/$mds.yml"
     cp modbus/runmodbusServer.yml modbus/rcusmodbusServer.yml
     sed -i "s/port=502/port=\$3/" modbus/rcusmodbusServer.yml
     rcustom="ansible-playbook -i inventory.ini modbus/rcusmodbusServer.yml"
-    [[ "\$USER" == "root" ]] && rcustom+=" -K"
-    eval "\$rcustom"
+    [[ "\$USER" == "root" ]] && rcustom+=" -K" && py+=" -K"
+    eval "\$py" && eval "\$rcustom"
   fi
 elif [[ "\$1" == "run" ]]; then
+  py="ansible-playbook -i inventory.ini modbus/$mds.yml"
   runstd="ansible-playbook -i inventory.ini modbus/runmodbusServer.yml"
-  [[ "\$USER" == "root" ]] && runstd+=" -K"
-  eval "\$runstd"
+  [[ "\$USER" == "root" ]] && runstd+=" -K" && py+=" -K"
+  eval "\$py" && eval "\$runstd"
 elif [[ "\$1" == "stop" ]] && [[ "\$2" == "--port" || "\$2" == "-p" ]]; then
   if [[ "\$#" -lt 3 ]]; then
     echo -e "\nSilahkan masukan port\n\nUntuk bantuan:\n  ./modbusServer.sh -h\n  atau\n  ./modbusServer.sh --help"
@@ -401,10 +401,8 @@ EOL
   become_user: "{{ ansible_user }}"
 
   tasks:
-    - name: Menjalankan Docker Compose
-      command: "docker-compose down"
-      args:
-        chdir: /$currUser/docker
+    - name: Menghentikan Docker Compose
+      command: "cd /$curruser/docker && docker-compose down"
 EOL
     echo "$smodServer berhasil dibuat"
     fi
