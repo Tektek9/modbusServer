@@ -1,5 +1,8 @@
 # modbusServer
-Project Modbus Server dengan Ansible & Docker
+Project Modbus Server
+- Ansible
+- Docker
+- Desktop Monitoring
 
 Note: ONPROGRESS
 
@@ -52,8 +55,13 @@ Untuk mengaktifkan server
 ./modbusServer.sh run
 ```
 
-
 Untuk mematikan server
 ```
 ./modbusServer.sh stop
 ```
+
+
+Prototype Desain Program
+![image](https://github.com/Tektek9/modbusServer/assets/40711562/b971315b-0b13-4e9a-9cbd-61fc53c3c747)
+
+
