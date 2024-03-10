@@ -1,7 +1,7 @@
 #!/bin/bash
 
-source listFunct
-source config
+source funct.conf
+source config.ini
 source secret.txt
 
 mds="modbusServer"
