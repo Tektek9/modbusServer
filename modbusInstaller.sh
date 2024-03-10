@@ -20,13 +20,23 @@ dpkgconf=$check2
 ans=$check3
 dcom=$check4
 cekdoc=$check5
+dpsa=$check6
+distro=$check7
+psaux=$check8
+psdocker=$check9
+finish=$check10
 df=$file1
 com=$file2
 req=$file3
 invenFile=$file4
-modServer=$file5
+mServeryml=$file5
+mServersh=$file9
 rmodServer=$file6
 smodServer=$file7
+mServerpy=$file8
+rcmodServer=$file10
+scmodServer=$file11
+modIns=$file12
 currUser=$usr
 passwd=$pwd
 host=$hosts
@@ -35,20 +45,20 @@ newport=$nport
 locpy=$pyloc
 
 if [[ -z "$1" ]]; then
-    echo ''$'\n'Untuk bantuan$'\n'  ./$file12 -h$'\n'  atau$'\n'  ./$file12 --help
+    echo ''$'\n'Untuk bantuan$'\n'  ./$modIns -h$'\n'  atau$'\n'  ./$modIns --help
 elif [[ "$1" == "-h" ]] || [[ "$1" == "--help" ]] || [[ "$1" == "-c" ]] || [[ "$1" == "--clear" ]] || [[ "$1" == "-i" ]] || [[ "$1" == "--install" ]]; then
   if [[ "$1" == "-h" ]] || [[ "$1" == "--help" ]]; then
-    installerHelp
+    installerHelp "$modIns"
   elif [[ "$1" == "-i" ]] || [[ "$1" == "--install" ]]; then
     echo ""$'\n'Menjalankan Setup
-    echo "$check7"
+    echo "$distro"
     if [ -z "$dpkgconf" ]; then
     echo "Pengecekan Ansible"
     else
-      echo "$check2"
+      echo "$dpkgconf"
     fi
     if [ -z "$ans" ]; then
-      echo Ansible belum terinstal'$\n'Melakukan instal Ansible $nm && ansibleInstall && echo "Ansible berhasil diinstal" && echo "Menginstal Docker"
+      echo Ansible belum terinstal'$\n'Melakukan instal Ansible $nm && ansibleInstall "$nm" && echo "Ansible berhasil diinstal" && echo "Menginstal Docker"
     else
       echo "Ansible terinstal"
     fi
@@ -60,7 +70,7 @@ elif [[ "$1" == "-h" ]] || [[ "$1" == "--help" ]] || [[ "$1" == "-c" ]] || [[ "$
         if [ -z "$dock" ]; then
           centosDocker
         else
-          cd .. && echo "Docker berhasil diinstal" && echo "$check6"
+          cd .. && echo "Docker berhasil diinstal" && echo "$dpsa"
         fi
       elif [[ "$osINFO" =~ "Debian" ]]; then
         debianDocker
@@ -127,28 +137,28 @@ elif [[ "$1" == "-h" ]] || [[ "$1" == "--help" ]] || [[ "$1" == "-c" ]] || [[ "$
     else
       echo "$mb folder $f" && mkdir $f && echo "Folder $f berhasil dibuat" && cd $f
     fi
-    if [ -e "$file5" ]; then
-      echo "File $file5 sudah ada"
+    if [ -e "$$modServer" ]; then
+      echo "File $$modServer sudah ada"
     else
-    echo "Membuat file $file5"
-    
-    echo "$file5 berhasil dibuat"
+    echo "Membuat file $$modServer"
+    modbusCreate "$$modServer" "$mServeryml" "$mb" "$mts" "$host" "$modport" "$f"
+    echo "$$modServer berhasil dibuat"
     fi
     if [ -e "$rmodServer" ]; then
       echo "File $rmodServer sudah ada"
     else
-    echo "Membuat file $rmodServer"
-    runmodCreate
-    echo "$rmodServer berhasil dibuat"
+      echo "Membuat file $rmodServer"
+      runmodCreate "$rmodServer" "$mts" "$df" "$com"
+      echo "$rmodServer berhasil dibuat"
     fi
-    if [ -e "$file9" ]; then
-      echo "File $file9 sudah ada"
+    if [ -e "$mServersh" ]; then
+      echo "File $mServersh sudah ada"
     else
-      echo "$mb file $file9"
+      echo "$mb file $mServersh"
       cd ..
-      assistCreate
-      chmod +x $file9
-      echo "$file9 berhasil dibuat"
+      assistCreate "$mServersh" "$invenFile" "$mServeryml" "$rcmodServer" "$rmodServer" "$smodServer"
+      chmod +x $mServersh
+      echo "$mServersh berhasil dibuat"
       cd modbus
     fi
     if [ -e "$invenFile" ]; then
@@ -157,10 +167,10 @@ elif [[ "$1" == "-h" ]] || [[ "$1" == "--help" ]] || [[ "$1" == "-c" ]] || [[ "$
       cd ..
       if [ "$currUser" == "root" ]; then
         becomeUsr="some_user"
-        invenCreate && echo "$invenFile berhasil dibuat"
+        invenCreate "$mb" "$Fi" "$invenFile" "$mds" "$becomeUsr" "$passwd" "$locpy" && echo "$invenFile berhasil dibuat"
       else 
         becomeUsr="root"
-        invenCreate && echo "$invenFile berhasil dibuat"
+        invenCreate "$mb" "$Fi" "$invenFile" "$mds" "$becomeUsr" "$passwd" "$locpy" && echo "$invenFile berhasil dibuat"
       fi
       cd modbus
     fi
@@ -168,7 +178,7 @@ elif [[ "$1" == "-h" ]] || [[ "$1" == "--help" ]] || [[ "$1" == "-c" ]] || [[ "$
       echo "File $smodServer sudah ada"
     else
       echo "$mb $p $smodServer"
-      stopmodCreate
+      stopmodCreate "$smodServer" "$mts" "$currUser" "$mServerpy"
     echo "$smodServer berhasil dibuat"
     fi
     cd ..
@@ -180,20 +190,20 @@ elif [[ "$1" == "-h" ]] || [[ "$1" == "--help" ]] || [[ "$1" == "-c" ]] || [[ "$
     if [ -e "$req" ]; then
       echo "File $req sudah ada"
     else
-      echo "$mb $req untuk docker" && reqCreate && echo "$req berhasil dibuat"
+      echo "$mb $req untuk docker" && reqCreate "$req" && echo "$req berhasil dibuat"
     fi
     if [ -e "$df" ]; then
       echo "File $df sudah ada"
     else
       echo "$mb $df"
-      dockerfileCreate
+      dockerfileCreate "$df" "$req" "$mServerpy"
     echo "$df berhasil dibuat"
     fi
     if [ -e "$com" ]; then
       echo "File $com sudah ada"
     else
       echo "$mb $com"
-      composeCreate
+      composeCreate "$com" "$newport"
     echo "$com berhasil dibuat"
     fi
     if [[ "$dcom" =~ "version" ]]; then
@@ -203,25 +213,25 @@ elif [[ "$1" == "-h" ]] || [[ "$1" == "--help" ]] || [[ "$1" == "-c" ]] || [[ "$
       dockerCompose
       echo "Instal Docker Compose selesai"
     fi
-    psdoc=$(ps aux | grep -Ev "auto" | grep docker)
+    psdoc=$(echo "$psdocker")
     if [[ "$psdoc" =~ "docker" ]]; then
-      echo "$check8"
-      dockerDaemon
+      echo "$psaux"
+      dockerDaemon "$image"
     else
       echo "Menjalankan docker daemon"
-      dockerDaemon
+      dockerDaemon "$image"
     fi
     if [ -z "$ans" ] && [ -e "$invenFile" ] && [ -e "$rmodServer" ] && [ -e "$smodServer" ]; then
-      echo Terjadi kesalahan instalasi$'\n'Proses instal ulang && cd .. && ./$file12 -i
+      echo Terjadi kesalahan instalasi$'\n'Proses instal ulang && cd .. && ./$modIns -i
     else
       docker ps -a | sed -n '1!p' | awk '{ print $1 }' | xargs -I % docker rm -f % &> /dev/null
-      echo Instalasi selesai$'\n\n'Berikut struktur file && cd .. && ls | grep .tgz | xargs -I % rm -rf % && tree
+      echo Instalasi selesai$'\n\n'Berikut struktur file && cd .. && echo "$finish"
     fi
   elif [[ "$1" -eq "-c" ]] || [[ "$1" -eq "--clear" ]]; then
     if [ -z "$ans" ] && [ -e "$invenFile" ] && [ -e "$rmodServer" ] && [ -e "$smodServer" ]; then
-      echo "Terjadi kesalahan ketika menghapus, mohon jalankan ulang program"
+      echo "Terjadi kesalahan ketika menghapus, mohon jalankan ulang program" && ./$modIns -c
     else
-      echo $invenFile$'\n'$file9$'\n'$f$'\n'$dc$'\n'$docbin | grep -Ev "Installer" | xargs -I % rm -rf % && echo ''$'\n'Berkas berhasil dihapus
+      echo $invenFile$'\n'$mServersh$'\n'$f$'\n'$dc$'\n'$docbin | grep -Ev "Installer" | xargs -I % rm -rf % && echo ''$'\n'Berkas berhasil dihapus
     fi
   fi
 fi
