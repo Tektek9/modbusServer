@@ -403,6 +403,9 @@ EOL
   tasks:
     - name: Menghentikan Docker Compose
       command: "cd /$curruser/docker && docker-compose down"
+
+    - name: Menghapus File $mds.py
+      command: "rm -rf $curruser/modbus/$mds.py"
 EOL
     echo "$smodServer berhasil dibuat"
     fi
