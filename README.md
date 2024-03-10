@@ -1,7 +1,8 @@
 # modbusServer
-Project Modbus Server dengan Ansible & Docker
-
-Desktop Monitoring
+Project Modbus Server
+- Ansible
+- Docker
+- Desktop Monitoring
 
 Note: ONPROGRESS
 
