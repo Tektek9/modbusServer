@@ -1,7 +1,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 import matplotlib.pyplot as plt
 from PyQt5.QtCore import QCoreApplication
-from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+# from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
 from pyModbusTCP.client import ModbusClient
 from time import sleep
@@ -19,7 +19,6 @@ class Ui_MainWindow(object):
         MainWindow.resize(900, 800)
         MainWindow.setMinimumSize(QtCore.QSize(900, 800))
         MainWindow.setMaximumSize(QtCore.QSize(900, 800))
-        # self.setupPlot()
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.gridLayout = QtWidgets.QGridLayout(self.centralwidget)
@@ -38,25 +37,89 @@ class Ui_MainWindow(object):
         self.widget_11 = QtWidgets.QWidget(self.widget_2)
         self.widget_11.setMinimumSize(QtCore.QSize(0, 450))
         self.widget_11.setMaximumSize(QtCore.QSize(16777215, 450))
-        self.widget_11.setStyleSheet("background-color: qlineargradient(spread:pad, x1:0, y1:0.489, x2:0.762, y2:0.5, stop:0 rgba(192, 192, 192, 255), stop:1 rgba(255, 255, 255, 255));")
+        self.widget_11.setStyleSheet("background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgba(37, 150, 190, 255), stop:1 rgba(26, 81, 91, 255));")
         self.widget_11.setObjectName("widget_11")
         self.verticalLayout_4 = QtWidgets.QVBoxLayout(self.widget_11)
         self.verticalLayout_4.setObjectName("verticalLayout_4")
         self.label_3 = QtWidgets.QLabel(self.widget_11)
-        self.label_3.setMinimumSize(QtCore.QSize(0, 150))
+        self.label_3.setMinimumSize(QtCore.QSize(0, 50))
         self.label_3.setMaximumSize(QtCore.QSize(16777215, 150))
         font = QtGui.QFont()
         font.setPointSize(25)
         self.label_3.setFont(font)
-        self.label_3.setStyleSheet("background-color: none;")
+        self.label_3.setStyleSheet("background-color: none;\n"
+"color: white;")
         self.label_3.setObjectName("label_3")
         self.verticalLayout_4.addWidget(self.label_3, 0, QtCore.Qt.AlignHCenter)
         self.graphicsView = QtWidgets.QGraphicsView(self.widget_11)
-        self.graphicsView.setMinimumSize(QtCore.QSize(0, 200))
+        self.graphicsView.setMinimumSize(QtCore.QSize(0, 175))
         self.graphicsView.setMaximumSize(QtCore.QSize(16777215, 200))
         self.graphicsView.setStyleSheet("background-color: rgb(255, 255, 255);")
         self.graphicsView.setObjectName("graphicsView")
         self.verticalLayout_4.addWidget(self.graphicsView)
+        self.widget_3 = QtWidgets.QWidget(self.widget_11)
+        self.widget_3.setObjectName("widget_3")
+        self.horizontalLayout_2 = QtWidgets.QHBoxLayout(self.widget_3)
+        self.horizontalLayout_2.setObjectName("horizontalLayout_2")
+        self.widget_4 = QtWidgets.QWidget(self.widget_3)
+        self.widget_4.setStyleSheet("background-color: none;")
+        self.widget_4.setObjectName("widget_4")
+        self.verticalLayout_5 = QtWidgets.QVBoxLayout(self.widget_4)
+        self.verticalLayout_5.setObjectName("verticalLayout_5")
+        self.label_4 = QtWidgets.QLabel(self.widget_4)
+        font = QtGui.QFont()
+        font.setPointSize(25)
+        self.label_4.setFont(font)
+        self.label_4.setStyleSheet("color: white;")
+        self.label_4.setAlignment(QtCore.Qt.AlignCenter)
+        self.label_4.setObjectName("label_4")
+        self.verticalLayout_5.addWidget(self.label_4)
+        self.lineEdit_3 = QtWidgets.QLineEdit(self.widget_4)
+        self.lineEdit_3.setMinimumSize(QtCore.QSize(0, 50))
+        self.lineEdit_3.setMaximumSize(QtCore.QSize(16777215, 50))
+        self.lineEdit_3.setStyleSheet("QLineEdit {\n"
+"    background-color: rgb(255, 255, 255);\n"
+"    border-radius:10px;\n"
+"    border: 1px;\n"
+"}\n"
+"QLineEdit:hover {\n"
+"    background-color: rgb(255, 255, 255);\n"
+"    border-radius:10px;\n"
+"    border: 2px solid black;\n"
+"}")
+        self.lineEdit_3.setObjectName("lineEdit_3")
+        self.verticalLayout_5.addWidget(self.lineEdit_3)
+        self.horizontalLayout_2.addWidget(self.widget_4)
+        self.widget_7 = QtWidgets.QWidget(self.widget_3)
+        self.widget_7.setStyleSheet("background-color: none;")
+        self.widget_7.setObjectName("widget_7")
+        self.verticalLayout_6 = QtWidgets.QVBoxLayout(self.widget_7)
+        self.verticalLayout_6.setObjectName("verticalLayout_6")
+        self.label_5 = QtWidgets.QLabel(self.widget_7)
+        font = QtGui.QFont()
+        font.setPointSize(25)
+        self.label_5.setFont(font)
+        self.label_5.setStyleSheet("color: white;")
+        self.label_5.setAlignment(QtCore.Qt.AlignCenter)
+        self.label_5.setObjectName("label_5")
+        self.verticalLayout_6.addWidget(self.label_5)
+        self.lineEdit_4 = QtWidgets.QLineEdit(self.widget_7)
+        self.lineEdit_4.setMinimumSize(QtCore.QSize(0, 50))
+        self.lineEdit_4.setMaximumSize(QtCore.QSize(16777215, 50))
+        self.lineEdit_4.setStyleSheet("QLineEdit {\n"
+"    background-color: rgb(255, 255, 255);\n"
+"    border-radius:10px;\n"
+"    border: 1px;\n"
+"}\n"
+"QLineEdit:hover {\n"
+"    background-color: rgb(255, 255, 255);\n"
+"    border-radius:10px;\n"
+"    border: 2px solid black;\n"
+"}")
+        self.lineEdit_4.setObjectName("lineEdit_4")
+        self.verticalLayout_6.addWidget(self.lineEdit_4)
+        self.horizontalLayout_2.addWidget(self.widget_7)
+        self.verticalLayout_4.addWidget(self.widget_3)
         self.verticalLayout_2.addWidget(self.widget_11)
         self.widget_6 = QtWidgets.QWidget(self.widget_2)
         self.widget_6.setStyleSheet("background-color: none;")
@@ -185,15 +248,13 @@ class Ui_MainWindow(object):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MODBUSMON"))
         self.label_3.setText(_translate("MainWindow", "MODBUS CLIENT SERVER MONITORING"))
+        self.label_4.setText(_translate("MainWindow", "IP"))
+        self.label_5.setText(_translate("MainWindow", "PORT"))
         self.label.setText(_translate("MainWindow", "SERVER"))
         self.pushButton.setText(_translate("MainWindow", "RESET"))
         self.label_2.setText(_translate("MainWindow", "CLIENT"))
         self.lineEdit_2.setText(_translate("MainWindow", " Silahkan isikan data baru"))
         self.pushButton_2.setText(_translate("MainWindow", "UPDATE"))
-
-    # def setupPlot(self):
-    #     self.canvas = FigureCanvas(self.figure)
-        # self.graphicsView.addWidget(self.canvas)
 
     def bacaData(self, address):
         result = self.client.read_holding_registers(address, 1)
@@ -242,13 +303,12 @@ class Ui_MainWindow(object):
         QCoreApplication.quit()
         event.ignore()
         sys.exit(0) 
-
+    
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
     ui = Ui_MainWindow()
     ui.setupUi(MainWindow)
-    MainWindow.closeEvent = ui.closeEvent
     MainWindow.show()
     sys.exit(app.exec_())
