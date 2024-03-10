@@ -60,5 +60,7 @@ Untuk mematikan server
 ./modbusServer.sh stop
 ```
 
+
 Prototype Desain Program
-![image](https://github.com/Tektek9/modbusServer/assets/40711562/c62481db-d24d-46a0-9fa8-89ad4588f5a1)
+![image](https://github.com/Tektek9/modbusServer/assets/40711562/7f7c860d-e086-4bf1-b1cd-42463667113e)
+
