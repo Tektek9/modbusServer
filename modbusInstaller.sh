@@ -334,15 +334,30 @@ elif [[ "\$1" == "run" ]] && [[ "\$2" == "--port" || "\$2" == "-p" ]]; then
   if [[ "\$#" -lt 3 ]]; then
     echo -e "\nSilahkan masukan port\n\nUntuk bantuan:\n  ./modbusServer.sh -h\n  atau\n  ./modbusServer.sh --help"
   elif [[ "\$#" -eq 3 ]]; then
-    docker run -d -p \$3:502 --name modbusServer $image:latest
+    cp modbus/runmodbusServer.yml modbus/rcusmodbusServer.yml
+    sed -i "s/port=502/port=$3/" modbus/rcusmodbusServer.yml
+    custom="ansible-playbook -i inventory.ini modbus/rcusmodbusServer.yml"
+    [[ "$USER" == "root" ]] && custom+=" -K"
+    eval "$custom"
   fi
 elif [[ "\$1" == "run" ]]; then
-  docker run -d -p $newport:502 --name modbusServer $image:latest
+  runstd="ansible-playbook -i inventory.ini modbus/runmodbusServer.yml"
+  [[ "$USER" == "root" ]] && runstd+=" -K"
+  eval "$runstd"
+elif [[ "\$1" == "stop" ]] && [[ "\$2" == "--port" || "\$2" == "-p" ]]; then
+  if [[ "\$#" -lt 3 ]]; then
+    echo -e "\nSilahkan masukan port\n\nUntuk bantuan:\n  ./modbusServer.sh -h\n  atau\n  ./modbusServer.sh --help"
+  elif [[ "\$#" -eq 3 ]]; then
+    cp modbus/runmodbusServer.yml modbus/scusmodbusServer.yml
+    sed -i "s/port=502/port=$3/" modbus/scusmodbusServer.yml
+    custom="ansible-playbook -i inventory.ini modbus/scusmodbusServer.yml"
+    [[ "$USER" == "root" ]] && custom+=" -K"
+    eval "$custom"
+  fi
 elif [[ "\$1" == "stop" ]]; then
-  stopstd="$runans$smodServer"
-  [[ "\$USER" == "root" ]] && stopstd+=" -K"
-  eval "\$stopstd"
-  rm -rf modbus/cusmodbusServer.yml
+  stopstd="ansible-playbook -i inventory.ini modbus/stopmodbusServer.yml"
+  [[ "$USER" == "root" ]] && runstd+=" -K"
+  eval "$stopstd"
 elif [[ "\$1" == "--help" ]] || [[ "\$1" == "-h" ]]; then
   echo -e"\n Info:"
   echo "  [run] - Untuk run modserver"
