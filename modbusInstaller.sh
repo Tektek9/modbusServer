@@ -46,9 +46,11 @@ debianDocker() {
     sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
   sudo apt-get update -qq
   ps aux | grep docker | awk '{ print $2 }' | xargs -I % sudo kill -9 % &> /dev/null
-  echo "Menjalankan docker daemon"
+  echo "Membuat docker daemon"
   echo -e "[Unit]\nDescription=Docker Application Container Engine\nDocumentation=https://docs.docker.com\nAfter=network-online.target docker.socket firewalld.service containerd.service time-set.target\nWants=network-online.target containerd.service\nRequires=docker.socket\n\n\n[Service]\nType=notify\nExecStart=/usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock\nExecReload=/bin/kill -s HUP $MAINPID\nTimeoutStartSec=0\nRestartSec=2\nRestart=always\nStartLimitBurst=3\nStartLimitInterval=60s\nLimitNPROC=infinity\nLimitCORE=infinity\nTasksMax=infinity\nDelegate=yes\nKillMode=process\nOOMScoreAdjust=-500\n\n\n[Install]\nWantedBy=multi-user.target" > /etc/systemd/system/docker.service
+  sudo systemctl enable docker &> /dev/null
   sudo systemctl daemon-reload &> /dev/null
+  echo "Menjalankan docker daemon"
   sudo systemctl restart docker &> /dev/null
 }
 
@@ -89,9 +91,11 @@ ubuntuDocker() {
     sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
   sudo apt-get update -qq
   ps aux | grep docker | awk '{ print $2 }' | xargs -I % sudo kill -9 % &> /dev/null
-  echo "Menjalankan docker daemon"
+  echo "Membuat docker daemon"
   echo -e "[Unit]\nDescription=Docker Application Container Engine\nDocumentation=https://docs.docker.com\nAfter=network-online.target docker.socket firewalld.service containerd.service time-set.target\nWants=network-online.target containerd.service\nRequires=docker.socket\n\n\n[Service]\nType=notify\nExecStart=/usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock\nExecReload=/bin/kill -s HUP $MAINPID\nTimeoutStartSec=0\nRestartSec=2\nRestart=always\nStartLimitBurst=3\nStartLimitInterval=60s\nLimitNPROC=infinity\nLimitCORE=infinity\nTasksMax=infinity\nDelegate=yes\nKillMode=process\nOOMScoreAdjust=-500\n\n\n[Install]\nWantedBy=multi-user.target" > /etc/systemd/system/docker.service
+  sudo systemctl enable docker &> /dev/null
   sudo systemctl daemon-reload &> /dev/null
+  echo "Menjalankan docker daemon"
   sudo systemctl restart docker &> /dev/null
 }
 
@@ -105,9 +109,11 @@ raspiDocker() {
     sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
   sudo apt-get update -qq
   ps aux | grep docker | awk '{ print $2 }' | xargs -I % sudo kill -9 % &> /dev/null
-  echo "Menjalankan docker daemon"
+  echo "Membuat docker daemon"
   echo -e "[Unit]\nDescription=Docker Application Container Engine\nDocumentation=https://docs.docker.com\nAfter=network-online.target docker.socket firewalld.service containerd.service time-set.target\nWants=network-online.target containerd.service\nRequires=docker.socket\n\n\n[Service]\nType=notify\nExecStart=/usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock\nExecReload=/bin/kill -s HUP $MAINPID\nTimeoutStartSec=0\nRestartSec=2\nRestart=always\nStartLimitBurst=3\nStartLimitInterval=60s\nLimitNPROC=infinity\nLimitCORE=infinity\nTasksMax=infinity\nDelegate=yes\nKillMode=process\nOOMScoreAdjust=-500\n\n\n[Install]\nWantedBy=multi-user.target" > /etc/systemd/system/docker.service
+  sudo systemctl enable docker &> /dev/null
   sudo systemctl daemon-reload &> /dev/null
+  echo "Menjalankan docker daemon"
   sudo systemctl restart docker &> /dev/null
 }
 
@@ -117,9 +123,11 @@ binaryDocker() {
   sudo cp docker/* /usr/bin/
   rm -rf docker/*
   ps aux | grep docker | awk '{ print $2 }' | xargs -I % sudo kill -9 % &> /dev/null
-  echo "Menjalankan docker daemon"
+  echo "Membuat docker daemon"
   echo -e "[Unit]\nDescription=Docker Application Container Engine\nDocumentation=https://docs.docker.com\nAfter=network-online.target docker.socket firewalld.service containerd.service time-set.target\nWants=network-online.target containerd.service\nRequires=docker.socket\n\n\n[Service]\nType=notify\nExecStart=/usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock\nExecReload=/bin/kill -s HUP $MAINPID\nTimeoutStartSec=0\nRestartSec=2\nRestart=always\nStartLimitBurst=3\nStartLimitInterval=60s\nLimitNPROC=infinity\nLimitCORE=infinity\nTasksMax=infinity\nDelegate=yes\nKillMode=process\nOOMScoreAdjust=-500\n\n\n[Install]\nWantedBy=multi-user.target" > /etc/systemd/system/docker.service
+  sudo systemctl enable docker &> /dev/null
   sudo systemctl daemon-reload &> /dev/null
+  echo "Menjalankan docker daemon"
   sudo systemctl restart docker &> /dev/null
 }
 
