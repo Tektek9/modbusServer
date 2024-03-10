@@ -315,7 +315,7 @@ EOL
   become_user: "{{ ansible_user }}"
 
   tasks:
-    - name: Menjalankan Docker Compose untuk modbus server
+    - name: Menjalankan Docker Compose untuk $mts
       shell: "docker {{ lookup('env', 'PWD') }}/docker/docker-compose up -d"
       async: 0
       poll: 0
