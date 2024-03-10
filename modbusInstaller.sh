@@ -54,7 +54,7 @@ elif [[ "$1" == "-h" ]] || [[ "$1" == "--help" ]] || [[ "$1" == "-c" ]] || [[ "$
     echo ""$'\n'Menjalankan Setup
     echo "$distro"
     if [ -z "$dpkgconf" ]; then
-    echo "Pengecekan Ansible"
+      echo "Pengecekan Ansible"
     else
       echo "$dpkgconf"
     fi
@@ -141,9 +141,9 @@ elif [[ "$1" == "-h" ]] || [[ "$1" == "--help" ]] || [[ "$1" == "-c" ]] || [[ "$
     if [ -e "$$modServer" ]; then
       echo "File $$modServer sudah ada"
     else
-    echo "Membuat file $$modServer"
-    modbusCreate "$$modServer" "$mServeryml" "$mb" "$mts" "$host" "$modport" "$f"
-    echo "$$modServer berhasil dibuat"
+      echo "Membuat file $$modServer"
+      modbusCreate "$$modServer" "$mServeryml" "$mb" "$mts" "$host" "$modport" "$f"
+      echo "$$modServer berhasil dibuat"
     fi
     if [ -e "$rmodServer" ]; then
       echo "File $rmodServer sudah ada"
@@ -180,7 +180,7 @@ elif [[ "$1" == "-h" ]] || [[ "$1" == "--help" ]] || [[ "$1" == "-c" ]] || [[ "$
     else
       echo "$mb $p $smodServer"
       stopmodCreate "$smodServer" "$mts" "$currUser" "$mServerpy"
-    echo "$smodServer berhasil dibuat"
+      echo "$smodServer berhasil dibuat"
     fi
     cd ..
     if [  -e "docker" ]; then
@@ -198,14 +198,14 @@ elif [[ "$1" == "-h" ]] || [[ "$1" == "--help" ]] || [[ "$1" == "-c" ]] || [[ "$
     else
       echo "$mb $df"
       dockerfileCreate "$df" "$req" "$mServerpy"
-    echo "$df berhasil dibuat"
+      echo "$df berhasil dibuat"
     fi
     if [ -e "$com" ]; then
       echo "File $com sudah ada"
     else
       echo "$mb $com"
       composeCreate "$com" "$newport"
-    echo "$com berhasil dibuat"
+      echo "$com berhasil dibuat"
     fi
     if [[ "$dcom" =~ "version" ]]; then
       echo "Docker Compose sudah terinstal"
