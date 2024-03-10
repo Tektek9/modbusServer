@@ -1,30 +1,29 @@
 #!/bin/bash
 
-invenFile="inventory.ini"
-currUser=$(cat secret.txt | sed -n '1p' | sed -e 's/usr=//g' -e 's/"//g')
-passwd=$(cat secret.txt | sed -n '2p' | sed -e 's/pwd=//g' -e 's/"//g')
 mds="modbusServer"
 mts="Modbus TCP Server"
-dpkgconf=$(sudo dpkg --configure -a 2> /dev/null)
-ans=$(ansible --version 2> /dev/null)
-modServer="$mds.yml"
-rmodServer="run$mds.yml"
-smodServer="stop$mds.yml"
-req="requirements.txt"
 dc="docker"
-com="docker-compose.yml"
-dcom=$(docker-compose --version 2> /dev/null)
-df="Dockerfile"
-image="oitc/modbus-server"
-docbin="docker-17.03.0-ce.tgz"
-readme="Readme"
 f="modbus"
 mb="Membuat"
-runans="ansible-playbook -i $invenFile $f/"
 nm="ansible"
 Fi="file inventory"
 p="playbook"
-osINFO=$(python3 -m distro)
+
+image=$(cat config.ini | grep pkg1= | grep -o '"[^"]*"' | sed 's/"//g')
+docbin=$(cat config.ini | grep pkg2= | grep -o '"[^"]*"' | sed 's/"//g')
+osINFO=$(cat config.ini | grep check1= | grep -o '"[^"]*"' | sed 's/"//g')
+dpkgconf=$(cat config.ini | grep check2= | grep -o '"[^"]*"' | sed 's/"//g')
+ans=$(cat config.ini | grep check3= | grep -o '"[^"]*"' | sed 's/"//g')
+dcom=$(cat config.ini | grep check4= | grep -o '"[^"]*"' | sed 's/"//g')
+df=$(cat config.ini | grep file1= | grep -o '"[^"]*"' | sed 's/"//g')
+com=$(cat config.ini | grep file2= | grep -o '"[^"]*"' | sed 's/"//g')
+req=$(cat config.ini | grep file3= | grep -o '"[^"]*"' | sed 's/"//g')
+invenFile=$(cat config.ini | grep file4= | grep -o '"[^"]*"' | sed 's/"//g')
+modServer=$(cat config.ini | grep file5= | grep -o '"[^"]*"' | sed 's/"//g')
+rmodServer=$(cat config.ini | grep file6= | grep -o '"[^"]*"' | sed 's/"//g')
+smodServer=$(cat config.ini | grep file7= | grep -o '"[^"]*"' | sed 's/"//g')
+currUser=$(cat secret.txt | sed -n '1p' | sed -e 's/usr=//g' -e 's/"//g')
+passwd=$(cat secret.txt | sed -n '2p' | sed -e 's/pwd=//g' -e 's/"//g')
 host=$(cat secret.txt | sed -n '3p' | sed -e 's/host=//g' -e 's/"//g')
 modport=$(cat secret.txt | sed -n '4p' | sed -e 's/mport=//g' -e 's/"//g')
 newport=$(cat secret.txt | sed -n '5p' | sed -e 's/nport=//g' -e 's/"//g')
@@ -495,7 +494,7 @@ EOL
     if [ -z "$ans" ] && [ -e "$invenFile" ] && [ -e "$rmodServer" ] && [ -e "$smodServer" ]; then
       echo "Terjadi kesalahan ketika menghapus, mohon jalankan ulang program"
     else
-      echo $invenFile$'\n'$mds.sh$'\n'$f$'\n'$readme$'\n'$dc$'\n'$docbin | grep -Ev "Installer" | xargs -I % rm -rf % && echo ''$'\n'Berkas berhasil dihapus
+      echo $invenFile$'\n'$mds.sh$'\n'$f$'\n'$dc$'\n'$docbin | grep -Ev "Installer" | xargs -I % rm -rf % && echo ''$'\n'Berkas berhasil dihapus
     fi
   fi
 fi
