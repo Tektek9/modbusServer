@@ -271,10 +271,14 @@ elif [[ "$1" == "-h" ]] || [[ "$1" == "--help" ]] || [[ "$1" == "-c" ]] || [[ "$
         - python3
         - python3-pip
 
-    - name: Menginstal modul docker untuk python
+    - name: Menginstal modul untuk python
       pip: 
-        name: Docker
+        name: "{{ item }}"
         executable: pip3
+
+      loop:
+        - docker
+        - docker-compose 
 
     - name: $mb script untuk $mts
       copy:
