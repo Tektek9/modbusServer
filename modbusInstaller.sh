@@ -13,6 +13,7 @@ smodServer="stop$mds.yml"
 req="requirements.txt"
 dc="docker"
 com="docker-compose.yml"
+dcom=$(docker-compose --version 2> /dev/null)
 df="Dockerfile"
 image="oitc/modbus-server"
 docbin="docker-17.03.0-ce.tgz"
@@ -316,7 +317,7 @@ EOL
 
   tasks:
     - name: Menjalankan Docker Compose
-      command: "cd /$curruser/docker && docker-compose up -d"
+      command: "cd /$currUser/docker && docker-compose up -d"
 EOL
     echo "$rmodServer berhasil dibuat"
     fi
@@ -402,10 +403,10 @@ EOL
 
   tasks:
     - name: Menghentikan Docker Compose
-      command: "cd /$curruser/docker && docker-compose down"
+      command: "cd /$currUser/docker && docker-compose down"
 
     - name: Menghapus File $mds.py
-      command: "rm -rf $curruser/modbus/$mds.py"
+      command: "rm -rf /$currUser/modbus/$mds.py"
 EOL
     echo "$smodServer berhasil dibuat"
     fi
@@ -454,6 +455,15 @@ services:
     restart: always
 EOL
     echo "$com berhasil dibuat"
+    fi
+    if [[ "$dcom" =~ "version" ]]; then
+      echo "Docker Compose sudah terinstal"
+    else
+      echo "Menginstal Docker Compose"
+      curl -SL https://github.com/docker/compose/releases/download/v2.24.7/docker-compose-linux-x86_64 -o /usr/local/bin/docker-compose &> /dev/null      
+      sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose 2> /dev/null
+      chmod +x /usr/bin/docker-compose
+      echo "Instal Docker Compose selesai"
     fi
     psdoc=$(ps aux | grep -Ev "auto" | grep docker)
     if [[ "$psdoc" =~ "docker" ]]; then
