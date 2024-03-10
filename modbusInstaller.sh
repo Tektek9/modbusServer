@@ -271,15 +271,6 @@ elif [[ "$1" == "-h" ]] || [[ "$1" == "--help" ]] || [[ "$1" == "-c" ]] || [[ "$
         - python3
         - python3-pip
 
-    - name: Menginstal modul untuk python
-      pip: 
-        name: "{{ item }}"
-        executable: pip3
-
-      loop:
-        - docker
-        - docker-compose 
-
     - name: $mb script untuk $mts
       copy:
         content: |
@@ -325,11 +316,16 @@ EOL
   become_user: "{{ ansible_user }}"
 
   tasks:
+    - name: Build Docker Image
+      ansible.builtin.docker_image:
+        build:
+          path: "{{ lookup('env', 'PWD') }}/docker/dockerfile"
+        name: modbus-server:latest
+        pull: yes
     - name: Menjalankan Docker Compose
       community.docker.docker_compose:
-        project_src: "/$currUser/docker"
-        files:
-          - docker-compose.yml
+        project_src: "{{ lookup('env', 'PWD') }}/docker/docker-compose-yml"
+        state: present
 EOL
     echo "$rmodServer berhasil dibuat"
     fi
@@ -467,7 +463,7 @@ services:
   modbus-server:
     build: .
     ports:
-      - "$nport:502"
+      - "$newport:502"
     restart: always
 EOL
     echo "$com berhasil dibuat"
