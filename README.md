@@ -21,8 +21,8 @@ Struktur folder setelah diinstall
 ├── modbusInstaller.sh
 ├── modbusServer.sh
 ├── README.md
-└── secret.txt
-└── app.py
+├── secret.txt
+├── app.py
 └── requirement.txt
 ```
 
