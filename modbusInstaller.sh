@@ -249,14 +249,14 @@ elif [[ "$1" == "-h" ]] || [[ "$1" == "--help" ]] || [[ "$1" == "-c" ]] || [[ "$
     else
       echo "$mb folder $f" && mkdir $f && echo "Folder $f berhasil dibuat" && cd $f
     fi
-    if [ -e "$mds.py" ]; then
-      echo "File $mds.py sudah ada"
+    if [ -e "$mds.yml" ]; then
+      echo "File $mds.yml sudah ada"
     else
-    echo "Membuat file $mds.py"
-    cat <<EOL > "$mds.py"
+    echo "Membuat file $mds.yml"
+    cat <<EOL > "$mds.yml"
 ---
 - name: Membuat $mds.py
-  hosts: $mds 
+  hosts: local
   become: no
   become_user: "{{ ansible_user }}"
 
@@ -301,7 +301,7 @@ elif [[ "$1" == "-h" ]] || [[ "$1" == "--help" ]] || [[ "$1" == "-c" ]] || [[ "$
         dest: "{{ lookup('env', 'PWD') }}/$f/$mds.py"
         mode: 0755
 EOL
-    echo "$mds.py berhasil dibuat"
+    echo "$mds.yml berhasil dibuat"
     fi
     if [ -e "$rmodServer" ]; then
       echo "File $rmodServer sudah ada"
@@ -310,7 +310,7 @@ EOL
     cat <<EOL > $rmodServer
 ---
 - name: Menjalankan $mts
-  hosts: $mds 
+  hosts: local
   become: no
   become_user: "{{ ansible_user }}"
 
@@ -335,29 +335,29 @@ elif [[ "\$1" == "run" ]] && [[ "\$2" == "--port" || "\$2" == "-p" ]]; then
     echo -e "\nSilahkan masukan port\n\nUntuk bantuan:\n  ./modbusServer.sh -h\n  atau\n  ./modbusServer.sh --help"
   elif [[ "\$#" -eq 3 ]]; then
     cp modbus/runmodbusServer.yml modbus/rcusmodbusServer.yml
-    sed -i "s/port=502/port=$3/" modbus/rcusmodbusServer.yml
+    sed -i "s/port=502/port=\$3/" modbus/rcusmodbusServer.yml
     rcustom="ansible-playbook -i inventory.ini modbus/rcusmodbusServer.yml"
-    [[ "$USER" == "root" ]] && rcustom+=" -K"
-    eval "$rcustom"
+    [[ "\$USER" == "root" ]] && rcustom+=" -K"
+    eval "\$rcustom"
   fi
 elif [[ "\$1" == "run" ]]; then
   runstd="ansible-playbook -i inventory.ini modbus/runmodbusServer.yml"
   [[ "\$USER" == "root" ]] && runstd+=" -K"
-  eval "$runstd"
+  eval "\$runstd"
 elif [[ "\$1" == "stop" ]] && [[ "\$2" == "--port" || "\$2" == "-p" ]]; then
   if [[ "\$#" -lt 3 ]]; then
     echo -e "\nSilahkan masukan port\n\nUntuk bantuan:\n  ./modbusServer.sh -h\n  atau\n  ./modbusServer.sh --help"
   elif [[ "\$#" -eq 3 ]]; then
     cp modbus/stopmodbusServer.yml modbus/scusmodbusServer.yml
-    sed -i "s/port=502/port=$3/" modbus/scusmodbusServer.yml
+    sed -i "s/port=502/port=\$3/" modbus/scusmodbusServer.yml
     scustom="ansible-playbook -i inventory.ini modbus/scusmodbusServer.yml"
     [[ "\$USER" == "root" ]] && scustom+=" -K"
-    eval "$scustom"
+    eval "\$scustom"
   fi
 elif [[ "\$1" == "stop" ]]; then
   stopstd="ansible-playbook -i inventory.ini modbus/stopmodbusServer.yml"
-  [[ "$USER" == "root" ]] && runstd+=" -K"
-  eval "$stopstd"
+  [[ "\$USER" == "root" ]] && runstd+=" -K"
+  eval "\$stopstd"
 elif [[ "\$1" == "--help" ]] || [[ "\$1" == "-h" ]]; then
   echo -e"\n Info:"
   echo "  [run] - Untuk run modserver"
@@ -396,7 +396,7 @@ EOL
       cat <<EOL > $smodServer
 ---
 - name: Menghentikan $mts
-  hosts: $mds 
+  hosts: local
   become: no
   become_user: "{{ ansible_user }}"
 
