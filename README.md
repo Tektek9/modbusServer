@@ -55,11 +55,10 @@ Untuk mengaktifkan server
 ./modbusServer.sh run
 ```
 
-![image](https://github.com/Tektek9/modbusServer/assets/40711562/c62481db-d24d-46a0-9fa8-89ad4588f5a1)
-
-
-
 Untuk mematikan server
 ```
 ./modbusServer.sh stop
 ```
+
+Prototype Desain Program
+![image](https://github.com/Tektek9/modbusServer/assets/40711562/c62481db-d24d-46a0-9fa8-89ad4588f5a1)
