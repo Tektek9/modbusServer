@@ -32,6 +32,8 @@ cat README.md
 ```
 
 
+SIsi Server
+
 Untuk installasi
 ```
 ./modbusInstaller -i
@@ -60,6 +62,17 @@ Untuk mengaktifkan server
 Untuk mematikan server
 ```
 ./modbusServer.sh stop
+```
+
+
+Sisi Client
+
+```
+pip install -r requirements.txt
+```
+
+```
+python app.py
 ```
 
 
