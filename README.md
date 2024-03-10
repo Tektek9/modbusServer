@@ -38,6 +38,9 @@ Server Side
 
 Untuk installasi
 ```
+chmod +x modbusInstaller.sh
+```
+```
 ./modbusInstaller -i
 ```
 atau
