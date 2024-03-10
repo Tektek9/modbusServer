@@ -1,7 +1,7 @@
 #!/bin/bash
 
-source func.ini
-source config.ini
+source listFunct
+source config
 source secret.txt
 
 mds="modbusServer"
@@ -13,39 +13,25 @@ nm="ansible"
 Fi="file inventory"
 p="playbook"
 
-image=$pkg1
-docbin=$pkg2
+export image=$pkg1
+export docbin=$pkg2
 osINFO=$check1
 dpkgconf=$check2
 ans=$check3
 dcom=$check4
 cekdoc=$check5
-df=$file1
-com=$file2
-req=$file3
-invenFile=$file4
+export df=$file1
+export com=$file2
+export req=$file3
+export invenFile=$file4
 modServer=$file5
-rmodServer=$file6
-smodServer=$file7
-currUser=$usr
-passwd=$pwd
-host=$hosts
-modport=$mport
-newport=$nport
-
-export docbin
-export image
-export df
-export com
-export req
-export invenFile
-export rmodServer
-export smodServer
-export currUser
-export passwd
-export host
-export modport
-export newport
+export rmodServer=$file6
+export smodServer=$file7
+export currUser=$usr
+export passwd=$pwd
+export host=$hosts
+export modport=$mport
+export newport=$nport
 
 if [[ -z "$1" ]]; then
     echo ''$'\n'Untuk bantuan$'\n'  ./$file12 -h$'\n'  atau$'\n'  ./$file12 --help

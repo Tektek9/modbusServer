@@ -1,0 +1,27 @@
+# Yang perlu didownload
+export pkg1="oitc/modbus-server"
+export pkg2="docker-17.03.0-ce.tgz"
+
+# Untuk pengecekan
+export check1="python3 -m distro"
+export check2="sudo dpkg --configure -a 2> /dev/null"
+export check3="ansible --version 2> /dev/null"
+export check4="docker-compose --version 2> /dev/null"
+export check5="sudo docker run hello-world &> /dev/null"
+export check6="docker ps -a | awk '{ print $1 }' | sed -n '1!p' | xargs -I % docker rm -f %"
+export check7="pip install distro &> /dev/null"
+export check8="ps aux | grep docker | awk '{ print $2 }' | xargs -I % sudo kill -9 % &> /dev/null"
+
+# File kebutuhan
+export file1="Dockerfile"
+export file2="docker-compose.yml"
+export file3="requirements.txt"
+export file4="inventory.ini"
+export file5="modbusServer.yml"
+export file6="runmodbusServer.yml"
+export file7="stopmodbusServer.yml"
+export file8="modbusServer.py"
+export file9="modbusServer.sh"
+export file10="rcusmodbusServer.yml"
+export file11="scusmodbusServer.yml"
+export file12="modbusInstaller.sh"

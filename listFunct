@@ -1,4 +1,5 @@
 source modbusInstaller.sh
+source config
 
 centosDocker() {
   sudo yum install -y yum-utils &> /dev/null
