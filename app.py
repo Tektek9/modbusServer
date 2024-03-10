@@ -1,7 +1,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 import matplotlib.pyplot as plt
 from PyQt5.QtCore import QCoreApplication
-# from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
 from pyModbusTCP.client import ModbusClient
 from time import sleep
@@ -13,7 +13,7 @@ class Ui_MainWindow(object):
         self.client = ModbusClient(host='127.0.0.1', port=9999, auto_open=True)
         self.address = ''
         self.figure = Figure()
-        
+
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(900, 800)
@@ -89,6 +89,25 @@ class Ui_MainWindow(object):
 "}")
         self.lineEdit_3.setObjectName("lineEdit_3")
         self.verticalLayout_5.addWidget(self.lineEdit_3)
+        self.pushButton_3 = QtWidgets.QPushButton(self.widget_4)
+        font = QtGui.QFont()
+        font.setPointSize(25)
+        self.pushButton_3.setFont(font)
+        self.pushButton_3.setStyleSheet("QPushButton {\n"
+"    color: rgb(255, 255, 255);\n"
+"    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgba(23, 204, 38, 255), stop:1 rgba(0, 122, 0, 255));\n"
+"    border-radius: 15px;\n"
+"    border: 1px;\n"
+"}\n"
+"\n"
+"QPushButton:hover {\n"
+"    background-color: rgb(0, 255, 0);\n"
+"    color: rgb(0, 0, 0);\n"
+"    border-radius:10px;\n"
+"    border: 2px solid black;\n"
+"}")
+        self.pushButton_3.setObjectName("pushButton_3")
+        self.verticalLayout_5.addWidget(self.pushButton_3)
         self.horizontalLayout_2.addWidget(self.widget_4)
         self.widget_7 = QtWidgets.QWidget(self.widget_3)
         self.widget_7.setStyleSheet("background-color: none;")
@@ -118,7 +137,42 @@ class Ui_MainWindow(object):
 "}")
         self.lineEdit_4.setObjectName("lineEdit_4")
         self.verticalLayout_6.addWidget(self.lineEdit_4)
+        self.pushButton_4 = QtWidgets.QPushButton(self.widget_7)
+        font = QtGui.QFont()
+        font.setPointSize(25)
+        self.pushButton_4.setFont(font)
+        self.pushButton_4.setStyleSheet("QPushButton {\n"
+"    color: rgb(255, 255, 255);\n"
+"    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgba(170, 0, 0, 255), stop:1 rgba(40, 10, 12, 255));\n"
+"    border-radius: 15px;\n"
+"    border: 1px;\n"
+"}\n"
+"\n"
+"QPushButton:hover {\n"
+"    background-color: rgb(255, 0, 0);\n"
+"    color: rgb(0, 0, 0);\n"
+"    border-radius:10px;\n"
+"    border: 2px solid black;\n"
+"}")
+        self.pushButton_4.setObjectName("pushButton_4")
+        self.verticalLayout_6.addWidget(self.pushButton_4)
         self.horizontalLayout_2.addWidget(self.widget_7)
+        self.widget_8 = QtWidgets.QWidget(self.widget_3)
+        self.widget_8.setMinimumSize(QtCore.QSize(50, 0))
+        self.widget_8.setMaximumSize(QtCore.QSize(16777215, 16777215))
+        self.widget_8.setStyleSheet("background-color: qlineargradient(spread:pad, x1:0, y1:0.489, x2:0.762, y2:0.5, stop:0 rgba(192, 192, 192, 255), stop:1 rgba(209, 209, 209, 255));")
+        self.widget_8.setObjectName("widget_8")
+        self.verticalLayout_7 = QtWidgets.QVBoxLayout(self.widget_8)
+        self.verticalLayout_7.setObjectName("verticalLayout_7")
+        self.label_6 = QtWidgets.QLabel(self.widget_8)
+        self.label_6.setStyleSheet("background-color: none;")
+        self.label_6.setObjectName("label_6")
+        self.verticalLayout_7.addWidget(self.label_6, 0, QtCore.Qt.AlignHCenter)
+        self.label_7 = QtWidgets.QLabel(self.widget_8)
+        self.label_7.setStyleSheet("background-color: none;")
+        self.label_7.setObjectName("label_7")
+        self.verticalLayout_7.addWidget(self.label_7, 0, QtCore.Qt.AlignHCenter)
+        self.horizontalLayout_2.addWidget(self.widget_8)
         self.verticalLayout_4.addWidget(self.widget_3)
         self.verticalLayout_2.addWidget(self.widget_11)
         self.widget_6 = QtWidgets.QWidget(self.widget_2)
@@ -158,6 +212,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_3.addItem(spacerItem)
         self.pushButton = QtWidgets.QPushButton(self.widget_10)
         self.pushButton.setMinimumSize(QtCore.QSize(0, 100))
+        self.pushButton.clicked.connect(self.resetData)
         font = QtGui.QFont()
         font.setPointSize(20)
         self.pushButton.setFont(font)
@@ -213,6 +268,7 @@ class Ui_MainWindow(object):
         self.verticalLayout.addItem(spacerItem2)
         self.pushButton_2 = QtWidgets.QPushButton(self.widget_5)
         self.pushButton_2.setMinimumSize(QtCore.QSize(0, 100))
+        self.pushButton_2.clicked.connect(self.kirimData)
         font = QtGui.QFont()
         font.setPointSize(20)
         self.pushButton_2.setFont(font)
@@ -249,7 +305,11 @@ class Ui_MainWindow(object):
         MainWindow.setWindowTitle(_translate("MainWindow", "MODBUSMON"))
         self.label_3.setText(_translate("MainWindow", "MODBUS CLIENT SERVER MONITORING"))
         self.label_4.setText(_translate("MainWindow", "IP"))
+        self.pushButton_3.setText(_translate("MainWindow", "Konek Server"))
         self.label_5.setText(_translate("MainWindow", "PORT"))
+        self.pushButton_4.setText(_translate("MainWindow", "Putus Koneksi Server"))
+        self.label_6.setText(_translate("MainWindow", "Status Koneksi"))
+        self.label_7.setText(_translate("MainWindow", "Status"))
         self.label.setText(_translate("MainWindow", "SERVER"))
         self.pushButton.setText(_translate("MainWindow", "RESET"))
         self.label_2.setText(_translate("MainWindow", "CLIENT"))
@@ -296,13 +356,6 @@ class Ui_MainWindow(object):
         self.ax.set_xlabel('X Label')
         self.ax.set_ylabel('Y Label')
         self.canvas.draw()
-
-    def closeEvent(self, event):
-        self.client.close()
-        app.quit()
-        QCoreApplication.quit()
-        event.ignore()
-        sys.exit(0) 
     
 if __name__ == "__main__":
     import sys
