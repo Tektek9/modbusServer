@@ -28,7 +28,7 @@ Struktur folder setelah diinstall
 
 Untuk panduan biasa baca Readme
 ```
-cat Readme
+cat README.md
 ```
 
 
