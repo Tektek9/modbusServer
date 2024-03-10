@@ -138,12 +138,12 @@ elif [[ "$1" == "-h" ]] || [[ "$1" == "--help" ]] || [[ "$1" == "-c" ]] || [[ "$
     else
       echo "$mb folder $f" && mkdir $f && echo "Folder $f berhasil dibuat" && cd $f
     fi
-    if [ -e "$$modServer" ]; then
-      echo "File $$modServer sudah ada"
+    if [ -e "$modServer" ]; then
+      echo "File $modServer sudah ada"
     else
-      echo "Membuat file $$modServer"
-      modbusCreate "$$modServer" "$mServeryml" "$mb" "$mts" "$host" "$modport" "$f"
-      echo "$$modServer berhasil dibuat"
+      echo "Membuat file $modServer"
+      modbusCreate "$modServer" "$mServeryml" "$mb" "$mts" "$host" "$modport" "$f"
+      echo "$modServer berhasil dibuat"
     fi
     if [ -e "$rmodServer" ]; then
       echo "File $rmodServer sudah ada"
