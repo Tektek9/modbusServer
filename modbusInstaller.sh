@@ -489,7 +489,7 @@ EOL
       echo Terjadi kesalahan instalasi$'\n'Proses instal ulang && cd .. && ./modbusInstaller.sh -i
     else
       docker ps -a | sed -n '1!p' | awk '{ print $1 }' | xargs -I % docker rm -f % &> /dev/null
-      echo Instalasi selesai$'\n\n'Berikut struktur file && cd .. && echo "" >> $readme && echo "Untuk Menjalankan:" >> $readme && echo "  ./modbusServer.sh -h" >> $readme && echo "" >> $readme && ls | grep .tgz | xargs -I % rm -rf % && tree
+      echo Instalasi selesai$'\n\n'Berikut struktur file && cd .. && ls | grep .tgz | xargs -I % rm -rf % && tree
     fi
   elif [[ "$1" -eq "-c" ]] || [[ "$1" -eq "--clear" ]]; then
     if [ -z "$ans" ] && [ -e "$invenFile" ] && [ -e "$rmodServer" ] && [ -e "$smodServer" ]; then
