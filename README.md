@@ -1,7 +1,7 @@
 # modbusServer
 Project Modbus Server dengan Ansible & Docker
 
-Note: ONPREGRESS
+Note: ONPROGRESS
 
 Struktur folder setelah diinstall
 ```
