@@ -317,7 +317,10 @@ EOL
 
   tasks:
     - name: Menjalankan Docker Compose
-      command: "cd /$currUser/docker && docker-compose up -d"
+      community.docker.docker_compose:
+        project_src: "/$currUser/docker"
+        files:
+          - docker-compose.yml
 EOL
     echo "$rmodServer berhasil dibuat"
     fi
@@ -403,7 +406,11 @@ EOL
 
   tasks:
     - name: Menghentikan Docker Compose
-      command: "cd /$currUser/docker && docker-compose down"
+      community.docker.docker_compose:
+        project_src: "/$currUser/docker"
+        state: absent
+        files:
+          - docker-compose.yml
 
     - name: Menghapus File $mds.py
       command: "rm -rf /$currUser/modbus/$mds.py"
