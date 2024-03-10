@@ -172,7 +172,6 @@ elif [[ "$1" == "-h" ]] || [[ "$1" == "--help" ]] || [[ "$1" == "-c" ]] || [[ "$
     if [[ -z $dc ]]; then
       echo "Menginstal Docker"
       if [[ "$osINFO" =~ "CentOS" ]]; then
-        mkdir docker && cd docker
         centosDocker
         dock=$(sudo docker run hello-world &> /dev/null)
         if [ -z "$dock" ]; then
@@ -181,7 +180,6 @@ elif [[ "$1" == "-h" ]] || [[ "$1" == "--help" ]] || [[ "$1" == "-c" ]] || [[ "$
           cd .. && echo "Docker berhasil diinstal" && docker ps -a | awk '{ print $1 }' | sed -n '1!p' | xargs -I % docker rm -f %
         fi
       elif [[ "$osINFO" =~ "Debian" ]]; then
-        mkdir docker && cd docker
         debianDocker
         dock=$(sudo docker run hello-world &> /dev/null)
         if [ -z "$dock" ]; then
@@ -190,7 +188,6 @@ elif [[ "$1" == "-h" ]] || [[ "$1" == "--help" ]] || [[ "$1" == "-c" ]] || [[ "$
           cd .. && echo "Docker berhasil diinstal"
         fi
       elif [[ "$osINFO" =~ "Fedora" ]]; then
-        mkdir docker && cd docker
         fedoraDocker
         dock=$(sudo docker run hello-world &> /dev/null)
         if [ -z "$dock" ]; then
@@ -199,7 +196,6 @@ elif [[ "$1" == "-h" ]] || [[ "$1" == "--help" ]] || [[ "$1" == "-c" ]] || [[ "$
           cd .. && echo "Docker berhasil diinstal"
         fi
       elif [[ "$osINFO" =~ "Red Hat" ]]; then
-        mkdir docker && cd docker
         rhelDocker
         dock=$(sudo docker run hello-world &> /dev/null)
         if [ -z "$dock" ]; then
@@ -208,7 +204,6 @@ elif [[ "$1" == "-h" ]] || [[ "$1" == "--help" ]] || [[ "$1" == "-c" ]] || [[ "$
           cd .. && echo "Docker berhasil diinstal"
         fi
       elif [[ "$osINFO" =~ "SUSE" ]] || [[ "$osINFO" =~ "openSUSE" ]]; then
-        mkdir docker && cd docker
         slesDocker
         dock=$(sudo docker run hello-world &> /dev/null)
         if [ -z "$dock" ]; then
@@ -217,7 +212,6 @@ elif [[ "$1" == "-h" ]] || [[ "$1" == "--help" ]] || [[ "$1" == "-c" ]] || [[ "$
           cd .. && echo "Docker berhasil diinstal"
         fi
       elif [[ "$osINFO" =~ "Ubuntu" ]]; then
-        mkdir docker && cd docker
         ubuntuDocker
         dock=$(sudo docker run hello-world &> /dev/null)
         if [ -z "$dock" ]; then
