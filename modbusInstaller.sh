@@ -13,6 +13,7 @@ smodServer="stop$mds.yml"
 req="requirements.txt"
 dc="docker"
 df="Dockerfile"
+image="oitc/modbus-server"
 docbin="docker-17.03.0-ce.tgz"
 readme="Readme"
 f="modbus"
@@ -293,10 +294,10 @@ elif [[ "\$1" == "run" ]] && [[ "\$2" == "--port" || "\$2" == "-p" ]]; then
   if [[ "\$#" -lt 3 ]]; then
     echo -e "\nSilahkan masukan port\n\nUntuk bantuan:\n  ./modbusServer.sh -h\n  atau\n  ./modbusServer.sh --help"
   elif [[ "\$#" -eq 3 ]]; then
-    docker run -d -p \$3:502 --name modbus1 vmanghnani/modbusserver
+    docker run -d -p \$3:502 --name modbusServer $image:latest
   fi
 elif [[ "\$1" == "run" ]]; then
-  docker run -d -p $newport:502 --name modbus1 vmanghnani/modbusserver
+  docker run -d -p $newport:502 --name modbusServer $image:latest
 elif [[ "\$1" == "stop" ]]; then
   stopstd="$runans$smodServer"
   [[ "\$USER" == "root" ]] && stopstd+=" -K"
@@ -384,11 +385,15 @@ EOL
     if [[ "$psdoc" =~ "docker" ]]; then
       ps aux | grep docker | awk '{ print $2 }' | xargs -I % sudo kill -9 % &> /dev/null
       nohup sudo dockerd > /dev/null 2>&1 &
-      docker build -t vmanghnani/modbusserver -f Dockerfile . &> /dev/null
+      docker pull $image &> /dev/null
+      echo "Proses Build Image"
+      docker build -t $image -f Dockerfile . &> /dev/null
     else
       echo "Menjalankan docker daemon"
       nohup sudo dockerd > /dev/null 2>&1 &
-      docker build -t vmanghnani/modbusserver -f Dockerfile . &> /dev/null
+      docker pull $image &> /dev/null
+      echo "Proses Build Image"
+      docker build -t $image -f Dockerfile . &> /dev/null
     fi
     if [ -z "$ans" ] && [ -e "$invenFile" ] && [ -e "$rmodServer" ] && [ -e "$smodServer" ]; then
       echo Terjadi kesalahan instalasi$'\n'Proses instal ulang && cd .. && ./modbusInstaller.sh -i
