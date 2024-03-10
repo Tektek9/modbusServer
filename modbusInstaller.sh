@@ -12,6 +12,7 @@ rmodServer="run$mds.yml"
 smodServer="stop$mds.yml"
 req="requirements.txt"
 dc="docker"
+com="docker-compose.yml"
 df="Dockerfile"
 image="oitc/modbus-server"
 docbin="docker-17.03.0-ce.tgz"
@@ -244,16 +245,17 @@ elif [[ "$1" == "-h" ]] || [[ "$1" == "--help" ]] || [[ "$1" == "-c" ]] || [[ "$
       echo "Docker sudah terinstal"
     fi
     if [ -e "$f" ]; then
-      echo "Folder $f sudah ada" && cd $f && echo "$mb $p $rmodServer"
+      echo "Folder $f sudah ada" && cd $f
     else
-      echo "Proses $mb folder $f" && mkdir $f && cd $f && echo "$mb $p $rmodServer"
+      echo "$mb folder $f" && mkdir $f && echo "Folder $f berhasil dibuat" && cd $f
     fi
-    if [ -e "$rmodServer" ]; then
-      echo "File $rmodServer sudah ada"
+    if [ -e "$mds.py" ]; then
+      echo "File $mds.py sudah ada"
     else
-    cat <<EOL > $rmodServer
+    echo "Membuat file $mds.py"
+    cat <<EOL > "$mds.py"
 ---
-- name: Menginstal dan menjalankan $mts
+- name: Membuat $mds.py
   hosts: $mds 
   become: no
   become_user: "{{ ansible_user }}"
@@ -298,9 +300,23 @@ elif [[ "$1" == "-h" ]] || [[ "$1" == "--help" ]] || [[ "$1" == "-c" ]] || [[ "$
               main()
         dest: "{{ lookup('env', 'PWD') }}/$f/$mds.py"
         mode: 0755
+EOL
+    echo "$mds.py berhasil dibuat"
+    fi
+    if [ -e "$rmodServer" ]; then
+      echo "File $rmodServer sudah ada"
+    else
+    echo "Membuat file $rmodServer"
+    cat <<EOL > $rmodServer
+---
+- name: Menjalankan $mts
+  hosts: $mds 
+  become: no
+  become_user: "{{ ansible_user }}"
 
+  tasks:
     - name: Menjalankan modbus server
-      shell: "nohup python3 {{ lookup('env', 'PWD') }}/$f/$mds.py > /dev/null 2>&1 &"
+      shell: "docker {{ lookup('env', 'PWD') }}/docker/docker-compose up -d"
       async: 0
       poll: 0
 EOL
@@ -371,7 +387,7 @@ EOL
 
   tasks:
     - name: Mencari dan mematikan $mts
-      shell: "ps aux | grep \"{{ lookup('env', 'PWD') }}/$f/modbusServer.py\" | grep -Ev 'auto' | awk '{ print \$2 }' | xargs -I % sudo kill -9 % > /dev/null 2>&1 || true"
+      shell: "docker {{ lookup('env', 'PWD') }}/docker/docker-compose down -d"
       ignore_errors: true
 EOL
     echo "$smodServer berhasil dibuat"
@@ -385,7 +401,7 @@ EOL
     if [ -e "$req" ]; then
       echo "File $req sudah ada"
     else
-      echo "$mb $req untuk docker" && echo "pyModbusTCP" > $req
+      echo "$mb $req untuk docker" && echo "pyModbusTCP" > $req && echo "$req berhasil dibuat"
     fi
     if [ -e "$df" ]; then
       echo "File $df sudah ada"
@@ -400,10 +416,27 @@ COPY $req .
 RUN pip install --no-cache-dir -r $req
 
 COPY modbus/$mds.py .
+EXPOSE 502
 
 CMD ["python", "$mds.py"]
 EOL
     echo "$df berhasil dibuat"
+    fi
+    if [ -e "$com" ]; then
+      echo "File $com sudah ada"
+    else
+      echo "$mb $com"
+      cat <<EOL > $com
+version: '3'
+
+services:
+  modbus-server:
+    build: .
+    ports:
+      - "$nport:502"
+    restart: always
+EOL
+    echo "$com berhasil dibuat"
     fi
     psdoc=$(ps aux | grep -Ev "auto" | grep docker)
     if [[ "$psdoc" =~ "docker" ]]; then
@@ -422,6 +455,7 @@ EOL
     if [ -z "$ans" ] && [ -e "$invenFile" ] && [ -e "$rmodServer" ] && [ -e "$smodServer" ]; then
       echo Terjadi kesalahan instalasi$'\n'Proses instal ulang && cd .. && ./modbusInstaller.sh -i
     else
+      docker ps -a | sed -n '1!p' | awk '{ print $1 }' | xargs -I % docker rm -f % &> /dev/null
       echo Instalasi selesai$'\n\n'Berikut struktur file && cd .. && echo "" >> $readme && echo "Untuk Menjalankan:" >> $readme && echo "  ./modbusServer.sh -h" >> $readme && echo "" >> $readme && ls | grep .tgz | xargs -I % rm -rf % && tree
     fi
   elif [[ "$1" -eq "-c" ]] || [[ "$1" -eq "--clear" ]]; then
