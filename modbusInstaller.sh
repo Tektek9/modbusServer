@@ -25,6 +25,7 @@ distro=$check7
 psaux=$check8
 psdocker=$check9
 finish=$check10
+deldoc=$check11
 df=$file1
 com=$file2
 req=$file3
@@ -216,15 +217,15 @@ elif [[ "$1" == "-h" ]] || [[ "$1" == "--help" ]] || [[ "$1" == "-c" ]] || [[ "$
     psdoc=$(echo "$psdocker")
     if [[ "$psdoc" =~ "docker" ]]; then
       echo "$psaux"
-      dockerDaemon "$image"
+      dockerDaemon "$image" "$df"
     else
       echo "Menjalankan docker daemon"
-      dockerDaemon "$image"
+      dockerDaemon "$image" "$df"
     fi
     if [ -z "$ans" ] && [ -e "$invenFile" ] && [ -e "$rmodServer" ] && [ -e "$smodServer" ]; then
       echo Terjadi kesalahan instalasi$'\n'Proses instal ulang && cd .. && ./$modIns -i
     else
-      docker ps -a | sed -n '1!p' | awk '{ print $1 }' | xargs -I % docker rm -f % &> /dev/null
+      echo "$deldoc"
       echo Instalasi selesai$'\n\n'Berikut struktur file && cd .. && echo "$finish"
     fi
   elif [[ "$1" -eq "-c" ]] || [[ "$1" -eq "--clear" ]]; then
