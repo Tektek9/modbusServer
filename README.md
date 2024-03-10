@@ -81,7 +81,8 @@ Jalankan Program
 python app.py
 ```
 <br />
-Prototype Desain Program
+<p align="center">Prototype Desain Program</p>
+<br />
 
 ![image](https://github.com/Tektek9/modbusServer/assets/40711562/8aa396c0-1574-4734-bb5f-aff68c1eb5e8)
 
