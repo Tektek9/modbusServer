@@ -45,7 +45,7 @@ newport="$nport"
 locpy="$pyloc"
 
 if [[ "$#" -lt 1 ]]; then
-    echo -e "\nUntuk bantuan\n\n  ./$modIns -h\n  atau\n  ./$modIns --help"
+    echo -e "\nUntuk bantuan\n\n  ./$modIns -h\n  atau\n  ./$modIns --help" 2>/dev/null
 elif [[ "$1" == "-h" ]] || [[ "$1" == "--help" ]] || [[ "$1" == "-c" ]] || [[ "$1" == "--clear" ]] || [[ "$1" == "-i" ]] || [[ "$1" == "--install" ]]; then
   if [[ "$1" == "-h" ]] || [[ "$1" == "--help" ]]; then
     installerHelp "$modIns"
