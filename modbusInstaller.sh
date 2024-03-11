@@ -245,7 +245,7 @@ elif [[ "$1" == "-h" ]] || [[ "$1" == "--help" ]] || [[ "$1" == "-c" ]] || [[ "$
       tree
     fi
   elif [[ "$1" -eq "-c" ]] || [[ "$1" -eq "--clear" ]]; then
-    if [ -z "$ans" ] && [ -e "$invenFile" ] && [ -e "$rmodServer" ] && [ -e "$smodServer" ]; then
+    if [ -e "$invenFile" ] && [ -e "$mServersh" ] && [ -e "$f" ] && [ -e "$dc" ] && [ -e "$docbin" ]; then
       echo "Terjadi kesalahan ketika menghapus, mohon jalankan ulang program"
       clear="./$modIns -c"
       eval "$clear"
