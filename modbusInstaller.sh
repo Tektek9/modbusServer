@@ -13,8 +13,8 @@ nm="ansible"
 Fi="file inventory"
 p="playbook"
 
-image=$pkg1
-docbin=$pkg2
+image="$pkg1"
+docbin="$pkg2"
 osINFO=$check1
 dpkgconf=$check2
 ans=$check3
