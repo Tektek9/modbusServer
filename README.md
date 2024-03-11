@@ -8,11 +8,13 @@ Note: ONPROGRESS
 
 Struktur folder setelah diinstall (BELUM DIUPDATE)
 ```
-.
+├── app.py
+├── config.ini
 ├── docker
 │   ├── docker-compose.yml
 │   ├── Dockerfile
 │   └── requirements.txt
+├── funct.conf
 ├── inventory.ini
 ├── modbus
 │   ├── modbusServer.yml
@@ -21,9 +23,8 @@ Struktur folder setelah diinstall (BELUM DIUPDATE)
 ├── modbusInstaller.sh
 ├── modbusServer.sh
 ├── README.md
-├── secret.txt
-├── app.py
-└── requirement.txt
+├── requirements.txt
+└── secret.txt
 ```
 <br />
 
