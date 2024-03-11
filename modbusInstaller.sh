@@ -25,7 +25,6 @@ distro=$(eval "$check7")
 psaux=$(eval "$check8")
 psdocker=$(eval "$check9")
 finish=$(eval "$check10")
-deldoc=$(eval "$check11")
 df="$file1"
 com="$file2"
 req="$file3"
@@ -45,6 +44,7 @@ modport="$mport"
 newport="$nport"
 locpy="$pyloc"
 
+
 if [[ -z "$1" ]]; then
     echo -e "\nUntuk bantuan\n\n  ./$modIns -h\n  atau\n  ./$modIns --help"
 elif [[ "$1" == "-h" ]] || [[ "$1" == "--help" ]] || [[ "$1" == "-c" ]] || [[ "$1" == "--clear" ]] || [[ "$1" == "-i" ]] || [[ "$1" == "--install" ]]; then
@@ -59,7 +59,10 @@ elif [[ "$1" == "-h" ]] || [[ "$1" == "--help" ]] || [[ "$1" == "-c" ]] || [[ "$
       echo "$dpkgconf"
     fi
     if [ -z "$ans" ]; then
-      echo Ansible belum terinstal'$\n'Melakukan instal Ansible $nm && ansibleInstall "$nm" && echo "Ansible berhasil diinstal" && echo "Menginstal Docker"
+      echo Ansible belum terinstal'$\n'Melakukan instal Ansible $nm
+      ansibleInstall "$nm"
+      echo "Ansible berhasil diinstal"
+      echo "Menginstal Docker"
     else
       echo "Ansible terinstal"
     fi
@@ -134,9 +137,13 @@ elif [[ "$1" == "-h" ]] || [[ "$1" == "--help" ]] || [[ "$1" == "-c" ]] || [[ "$
       echo "Docker sudah terinstal"
     fi
     if [ -e "$f" ]; then
-      echo "Folder $f sudah ada" && cd $f
+      echo "Folder $f sudah ada"
+      cd $f
     else
-      echo "$mb folder $f" && mkdir $f && echo "Folder $f berhasil dibuat" && cd $f
+      echo "$mb folder $f"
+      mkdir $f
+      echo "Folder $f berhasil dibuat"
+      cd $f
     fi
     if [ -e "$mServeryml" ]; then
       echo "File $mServeryml sudah ada"
@@ -168,10 +175,12 @@ elif [[ "$1" == "-h" ]] || [[ "$1" == "--help" ]] || [[ "$1" == "-c" ]] || [[ "$
       cd ..
       if [ "$currUser" == "root" ]; then
         becomeUsr="some_user"
-        invenCreate "$mb" "$Fi" "$invenFile" "$mds" "$becomeUsr" "$passwd" "$locpy" && echo "$invenFile berhasil dibuat"
+        invenCreate "$mb" "$Fi" "$invenFile" "$mds" "$becomeUsr" "$passwd" "$locpy"
+        echo "$invenFile berhasil dibuat"
       else 
         becomeUsr="root"
-        invenCreate "$mb" "$Fi" "$invenFile" "$mds" "$becomeUsr" "$passwd" "$locpy" && echo "$invenFile berhasil dibuat"
+        invenCreate "$mb" "$Fi" "$invenFile" "$mds" "$becomeUsr" "$passwd" "$locpy"
+        echo "$invenFile berhasil dibuat"
       fi
       cd modbus
     fi
@@ -191,7 +200,9 @@ elif [[ "$1" == "-h" ]] || [[ "$1" == "--help" ]] || [[ "$1" == "-c" ]] || [[ "$
     if [ -e "$req" ]; then
       echo "File $req sudah ada"
     else
-      echo "$mb $req untuk docker" && reqCreate "$req" && echo "$req berhasil dibuat"
+      echo "$mb $req untuk docker"
+      reqCreate "$req"
+      echo "$req berhasil dibuat"
     fi
     if [ -e "$df" ]; then
       echo "File $df sudah ada"
@@ -223,16 +234,25 @@ elif [[ "$1" == "-h" ]] || [[ "$1" == "--help" ]] || [[ "$1" == "-c" ]] || [[ "$
       dockerDaemon "$image" "$df"
     fi
     if [ -z "$ans" ] && [ -e "$invenFile" ] && [ -e "$rmodServer" ] && [ -e "$smodServer" ]; then
-      echo Terjadi kesalahan instalasi$'\n'Proses instal ulang && cd .. && ./"$modIns" -i
+      echo Terjadi kesalahan instalasi$'\n'Proses instal ulang
+      cd ..
+      install="./$modIns -i"
+      eval "$install"
     else
-      echo "$deldoc"
-      echo Instalasi selesai$'\n\n'Berikut struktur file && cd .. && echo "$finish" && tree
+      echo "$dpsa"
+      echo Instalasi selesai$'\n\n'Berikut struktur file
+      cd ..
+      echo "$finish"
+      tree
     fi
   elif [[ "$1" -eq "-c" ]] || [[ "$1" -eq "--clear" ]]; then
     if [ -z "$ans" ] && [ -e "$invenFile" ] && [ -e "$rmodServer" ] && [ -e "$smodServer" ]; then
-      echo "Terjadi kesalahan ketika menghapus, mohon jalankan ulang program" && ./"$modIns" -c
+      echo "Terjadi kesalahan ketika menghapus, mohon jalankan ulang program"
+      clear="./$modIns -c"
+      eval "$clear"
     else
-      echo $invenFile$'\n'$mServersh$'\n'$f$'\n'$dc$'\n'$docbin | grep -Ev "Installer" | xargs -I % rm -rf % && echo ''$'\n'Berkas berhasil dihapus
+      echo $invenFile$'\n'$mServersh$'\n'$f$'\n'$dc$'\n'$docbin | grep -Ev "Installer" | xargs -I % rm -rf %
+      echo ''$'\n'Berkas berhasil dihapus
     fi
   fi
 fi
