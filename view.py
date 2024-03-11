@@ -1,7 +1,6 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 import matplotlib.pyplot as plt
 from matplotlib.figure import Figure
-from threading import Thread
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -202,7 +201,6 @@ class Ui_MainWindow(object):
         self.verticalLayout_3.addItem(spacerItem)
         self.pushButton = QtWidgets.QPushButton(self.widget_10)
         self.pushButton.setMinimumSize(QtCore.QSize(0, 100))
-        self.pushButton.clicked.connect(self.resetData)
         font = QtGui.QFont()
         font.setPointSize(20)
         self.pushButton.setFont(font)
@@ -258,7 +256,6 @@ class Ui_MainWindow(object):
         self.verticalLayout.addItem(spacerItem2)
         self.pushButton_2 = QtWidgets.QPushButton(self.widget_5)
         self.pushButton_2.setMinimumSize(QtCore.QSize(0, 100))
-        self.pushButton_2.clicked.connect(self.kirimData)
         font = QtGui.QFont()
         font.setPointSize(20)
         self.pushButton_2.setFont(font)
@@ -283,10 +280,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_2.addWidget(self.widget_6)
         self.horizontalLayout.addWidget(self.widget_2)
         self.gridLayout.addWidget(self.widget, 0, 0, 1, 1)
-        self.updateDataTerbaru = Thread(target=self.updateData)
-        self.updateDataTerbaru.start()
         MainWindow.setCentralWidget(self.centralwidget)
-
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 

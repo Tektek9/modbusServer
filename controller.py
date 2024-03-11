@@ -1,6 +1,7 @@
 from time import sleep
 from pyModbusTCP.client import ModbusClient
 from view import Ui_MainWindow
+from threading import Thread
 
 class modbusController():
     def __init__(self, MainWindow):
@@ -14,6 +15,10 @@ class modbusController():
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self.MainWindow)
         self.MainWindow.show()
+        self.updateDataTerbaru = Thread(target=self.updateData)
+        self.updateDataTerbaru.start()
+        self.ui.pushButton.clicked.connect(self.resetData)
+        self.ui.pushButton_2.clicked.connect(self.kirimData)
 
     def bacaData(self):
         self.result = self.client.read_holding_registers(self.address, 1)
