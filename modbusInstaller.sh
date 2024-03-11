@@ -223,14 +223,14 @@ elif [[ "$1" == "-h" ]] || [[ "$1" == "--help" ]] || [[ "$1" == "-c" ]] || [[ "$
       dockerDaemon "$image" "$df"
     fi
     if [ -z "$ans" ] && [ -e "$invenFile" ] && [ -e "$rmodServer" ] && [ -e "$smodServer" ]; then
-      echo Terjadi kesalahan instalasi$'\n'Proses instal ulang && cd .. && ./$modIns -i
+      echo Terjadi kesalahan instalasi$'\n'Proses instal ulang && cd .. && ./"$modIns" -i
     else
       echo "$deldoc"
-      echo Instalasi selesai$'\n\n'Berikut struktur file && cd .. && echo "$finish"
+      echo Instalasi selesai$'\n\n'Berikut struktur file && cd .. && echo "$finish" && tree
     fi
   elif [[ "$1" -eq "-c" ]] || [[ "$1" -eq "--clear" ]]; then
     if [ -z "$ans" ] && [ -e "$invenFile" ] && [ -e "$rmodServer" ] && [ -e "$smodServer" ]; then
-      echo "Terjadi kesalahan ketika menghapus, mohon jalankan ulang program" && ./$modIns -c
+      echo "Terjadi kesalahan ketika menghapus, mohon jalankan ulang program" && ./"$modIns" -c
     else
       echo $invenFile$'\n'$mServersh$'\n'$f$'\n'$dc$'\n'$docbin | grep -Ev "Installer" | xargs -I % rm -rf % && echo ''$'\n'Berkas berhasil dihapus
     fi
