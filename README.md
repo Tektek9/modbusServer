@@ -82,7 +82,7 @@ python app.py
 <p align="center">Prototype Desain Program</p>
 <br />
 <p align="center">
-  <img src="https://github.com/Tektek9/modbusServer/assets/40711562/8aa396c0-1574-4734-bb5f-aff68c1eb5e8" alt="Sublime's custom image"/>
+  <img src="https://github.com/Tektek9/modbusServer/assets/40711562/4900091a-0991-4832-9b58-ecb267ee50e1" alt="Sublime's custom image"/>
 </p>
 
 
