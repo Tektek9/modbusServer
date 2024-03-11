@@ -1,6 +1,6 @@
 from time import sleep
 from pyModbusTCP.client import ModbusClient
-from view import Ui_MainWindow
+from app.view import Ui_MainWindow
 from threading import Thread
 
 class modbusController():
