@@ -1,19 +1,9 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 import matplotlib.pyplot as plt
-from PyQt5.QtCore import QCoreApplication
-from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
-from pyModbusTCP.client import ModbusClient
-from time import sleep
 from threading import Thread
 
 class Ui_MainWindow(object):
-    def __init__(self):
-        super().__init__()
-        self.client = ModbusClient(host='127.0.0.1', port=9999, auto_open=True)
-        self.address = ''
-        self.figure = Figure()
-
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(900, 800)
@@ -315,53 +305,3 @@ class Ui_MainWindow(object):
         self.label_2.setText(_translate("MainWindow", "CLIENT"))
         self.lineEdit_2.setText(_translate("MainWindow", " Silahkan isikan data baru"))
         self.pushButton_2.setText(_translate("MainWindow", "UPDATE"))
-
-    def bacaData(self, address):
-        result = self.client.read_holding_registers(address, 1)
-        if result:
-            return result[0]
-        else:
-            return None
-
-    def kirimData(self):
-        try:
-            dataBaru = int(self.lineEdit_2.text())
-            sleep(1)
-            modifData = self.bacaData(dataBaru)
-            self.lineEdit.setText(str(modifData))
-        except Exception as e:
-            print(f"Terjadi kesalahan: {e}")
-
-    def resetData(self):
-        try:
-            dataBaru = int(0)
-            modifData = self.bacaData(dataBaru)
-            self.lineEdit.setText(str(modifData))
-            sleep(1)
-        except Exception as e:
-            print(f"Terjadi kesalahan: {e}")
-
-    def tulisData(self, value):
-        self.client.write_single_register(self.address, value)
-
-    def updateData(self):
-        while True:
-            dataLama = self.bacaData(0)
-            self.lineEdit.setText(str(dataLama))
-            self.plot(dataLama)
-
-    def plot(self, data):
-        self.ax.clear()
-        self.ax.plot([0, 1, 2], [data, data + 10, data - 5])
-        self.ax.set_xlabel('X Label')
-        self.ax.set_ylabel('Y Label')
-        self.canvas.draw()
-    
-if __name__ == "__main__":
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    MainWindow = QtWidgets.QMainWindow()
-    ui = Ui_MainWindow()
-    ui.setupUi(MainWindow)
-    MainWindow.show()
-    sys.exit(app.exec_())
