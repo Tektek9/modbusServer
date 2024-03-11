@@ -5,8 +5,9 @@ from threading import Thread
 
 class modbusController():
     def __init__(self, MainWindow):
-        self.client = ModbusClient(host='127.0.0.1', port=9999, auto_open=True)
-        self.address = ''
+        self.host = '127.0.0.1'
+        self.port = 9999
+        self.client = ModbusClient(host=self.host, port=self.port, auto_open=True)
         self.MainWindow = MainWindow
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self.MainWindow)
