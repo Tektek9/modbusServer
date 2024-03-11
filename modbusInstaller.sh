@@ -216,8 +216,9 @@ elif [[ "$1" == "-h" ]] || [[ "$1" == "--help" ]] || [[ "$1" == "-c" ]] || [[ "$
       dockerCompose
       echo "Instal Docker Compose selesai"
     fi
-    if eval "$psdocker" | grep -q "docker"; then
-      echo "$psaux"
+    cek=$(echo "$psdocker")
+    if [[ "$cek" =~ "docker" ]]; then
+      eval "$psaux"
       dockerDaemon "$image" "$df"
     else
       echo "Menjalankan docker daemon"
@@ -229,7 +230,7 @@ elif [[ "$1" == "-h" ]] || [[ "$1" == "--help" ]] || [[ "$1" == "-c" ]] || [[ "$
       install="./$modIns -i"
       eval "$install"
     else
-      echo "$dpsa"
+      eval "$dpsa"
       echo Instalasi selesai$'\n\n'Berikut struktur file
       cd ..
       echo "$finish"
