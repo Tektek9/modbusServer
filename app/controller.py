@@ -16,8 +16,8 @@ class modbusController():
         self.ui.pushButton.clicked.connect(self.resetData)
         self.ui.pushButton_2.clicked.connect(self.kirimData)
 
-    def bacaData(self):
-        self.result = self.client.read_holding_registers(self.address, 1)
+    def bacaData(self, data):
+        self.result = self.client.read_holding_registers(data, 1)
         if self.result:
             return self.result[0]
         else:
