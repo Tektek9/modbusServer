@@ -26,27 +26,27 @@ psaux=$check8
 psdocker=$check9
 finish=$check10
 deldoc=$check11
-df=$file1
-com=$file2
-req=$file3
-invenFile=$file4
-mServeryml=$file5
-mServersh=$file9
-rmodServer=$file6
-smodServer=$file7
-mServerpy=$file8
-rcmodServer=$file10
-scmodServer=$file11
-modIns=$file12
-currUser=$user
-passwd=$passwd
-host=$ip
-modport=$mport
-newport=$nport
-locpy=$pyloc
+df="$file1"
+com="$file2"
+req="$file3"
+invenFile="$file4"
+mServeryml="$file5"
+mServersh="$file9"
+rmodServer="$file6"
+smodServer="$file7"
+mServerpy="$file8"
+rcmodServer="$file10"
+scmodServer="$file11"
+modIns="$file12"
+currUser="$user"
+passwd="$passwd"
+host="$ip"
+modport="$mport"
+newport="$nport"
+locpy="$pyloc"
 
 if [[ -z "$1" ]]; then
-    echo ''$'\n'Untuk bantuan$'\n'  ./$modIns -h$'\n'  atau$'\n'  ./$modIns --help
+    echo -e "\nUntuk bantuan\n\n  ./$modIns -h\n  atau\n  ./$modIns --help"
 elif [[ "$1" == "-h" ]] || [[ "$1" == "--help" ]] || [[ "$1" == "-c" ]] || [[ "$1" == "--clear" ]] || [[ "$1" == "-i" ]] || [[ "$1" == "--install" ]]; then
   if [[ "$1" == "-h" ]] || [[ "$1" == "--help" ]]; then
     installerHelp "$modIns"
