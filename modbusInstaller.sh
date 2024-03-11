@@ -45,7 +45,7 @@ newport="$nport"
 locpy="$pyloc"
 
 if [[ "$#" -lt 1 ]]; then
-    echo -e "\nUntuk bantuan\n\n  ./$modIns -h\n  atau\n  ./$modIns --help" 2>/dev/null
+    echo -e "\nUntuk bantuan\n\n  ./$modIns -h\n  atau\n  ./$modIns --help"
 elif [[ "$1" == "-h" ]] || [[ "$1" == "--help" ]] || [[ "$1" == "-c" ]] || [[ "$1" == "--clear" ]] || [[ "$1" == "-i" ]] || [[ "$1" == "--install" ]]; then
   if [[ "$1" == "-h" ]] || [[ "$1" == "--help" ]]; then
     installerHelp "$modIns"
@@ -69,64 +69,56 @@ elif [[ "$1" == "-h" ]] || [[ "$1" == "--help" ]] || [[ "$1" == "-c" ]] || [[ "$
       echo "Menginstal Docker"
       if [[ "$osINFO" =~ "CentOS" ]]; then
         centosDocker
-        dock=$(echo "$cekdoc")
-        if [ -z "$dock" ]; then
+        if [ -z "$(echo "$cekdoc")" ]; then
           centosDocker
         else
           cd .. && echo "Docker berhasil diinstal" && echo "$dpsa"
         fi
       elif [[ "$osINFO" =~ "Debian" ]]; then
         debianDocker
-        dock=$(echo "$cekdoc")
-        if [ -z "$dock" ]; then
+        if [ -z "$(echo "$cekdoc")" ]; then
           debianDocker
         else
           cd .. && echo "Docker berhasil diinstal"
         fi
       elif [[ "$osINFO" =~ "Fedora" ]]; then
         fedoraDocker
-        dock=$(echo "$cekdoc")
-        if [ -z "$dock" ]; then
+        if [ -z "$(echo "$cekdoc")" ]; then
           fedoraDocker
         else
           cd .. && echo "Docker berhasil diinstal"
         fi
       elif [[ "$osINFO" =~ "Red Hat" ]]; then
         rhelDocker
-        dock=$(echo "$cekdoc")
-        if [ -z "$dock" ]; then
+        if [ -z "$(echo "$cekdoc")k" ]; then
           rhelDocker
         else
           cd .. && echo "Docker berhasil diinstal"
         fi
       elif [[ "$osINFO" =~ "SUSE" ]] || [[ "$osINFO" =~ "openSUSE" ]]; then
         slesDocker
-        dock=$(echo "$cekdoc")
-        if [ -z "$dock" ]; then
+        if [ -z "$(echo "$cekdoc")" ]; then
           slesDocker
         else
           cd .. && echo "Docker berhasil diinstal"
         fi
       elif [[ "$osINFO" =~ "Ubuntu" ]]; then
         ubuntuDocker
-        dock=$(echo "$cekdoc")
-        if [ -z "$dock" ]; then
+        if [ -z "$(echo "$cekdoc")" ]; then
           ubuntuDocker
         else
           cd .. && echo "Docker berhasil diinstal"
         fi
       elif [[ "$osINFO" =~ "Raspbian" ]]; then
         raspiDocker
-        dock=$(echo "$cekdoc")
-        if [ -z "$dock" ]; then
+        if [ -z "$(echo "$cekdoc")" ]; then
           raspiDocker
         else
           echo "Docker berhasil diinstal"
         fi
       else
         binaryDocker "$docbin"
-        dock=$(echo "$cekdoc")
-        if [ -z "$dock" ]; then
+        if [ -z "$(echo "$cekdoc")" ]; then
           binaryDocker "$docbin"
         else
           echo "Docker berhasil diinstal"
@@ -224,8 +216,7 @@ elif [[ "$1" == "-h" ]] || [[ "$1" == "--help" ]] || [[ "$1" == "-c" ]] || [[ "$
       dockerCompose
       echo "Instal Docker Compose selesai"
     fi
-    psdoc=$(echo "$psdocker")
-    if [[ "$psdoc" =~ "docker" ]]; then
+    if eval "$psdocker" | grep -q "docker"; then
       echo "$psaux"
       dockerDaemon "$image" "$df"
     else
