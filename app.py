@@ -303,7 +303,7 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MODBUSMON"))
-        self.label_3.setText(_translate("MainWindow", "MODBUS CLIENT SERVER MONITORING"))
+        self.label_3.setText(_translate("MainWindow", "MODBUS MONITORING"))
         self.label_4.setText(_translate("MainWindow", "IP"))
         self.pushButton_3.setText(_translate("MainWindow", "Connect"))
         self.label_5.setText(_translate("MainWindow", "PORT"))
