@@ -9,23 +9,28 @@ Note: ONPROGRESS
 Struktur folder setelah diinstall
 ```
 .
-├── app.py
 ├── config.ini
+├── controller.py
 ├── docker
 │   ├── docker-compose.yml
 │   ├── Dockerfile
 │   └── requirements.txt
 ├── funct.conf
 ├── inventory.ini
+├── main.py
 ├── modbus
 │   ├── modbusServer.yml
 │   ├── runmodbusServer.yml
 │   └── stopmodbusServer.yml
 ├── modbusInstaller.sh
 ├── modbusServer.sh
+├── __pycache__
+│   ├── controller.cpython-311.pyc
+│   └── view.cpython-311.pyc
 ├── README.md
 ├── requirements.txt
-└── secret.txt
+├── secret.txt
+└── view.py
 ```
 <br />
 
@@ -78,7 +83,7 @@ pip install -r requirements.txt
 
 Jalankan Program
 ```
-python app.py
+python main.py
 ```
 <br />
 <p align="center">Prototype Desain Program</p>
