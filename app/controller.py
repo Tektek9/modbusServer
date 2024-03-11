@@ -7,9 +7,6 @@ class modbusController():
     def __init__(self, MainWindow):
         self.address = ''
         self.client = ModbusClient(host='127.0.0.1', port=9999, auto_open=True)
-        self.databaru = ''
-        self.modifData = ''
-        self.value = ''
         self.data = ''
         self.MainWindow = MainWindow
         self.ui = Ui_MainWindow()
@@ -29,18 +26,18 @@ class modbusController():
 
     def kirimData(self):
         try:
-            self.dataBaru = int(self.lineEdit_2.text())
+            dataBaru = int(self.ui.lineEdit_2.text())
             sleep(1)
-            self.modifData = self.bacaData(self.dataBaru)
-            self.lineEdit.setText(str(self.modifData))
+            modifData = self.bacaData(dataBaru)
+            self.ui.lineEdit.setText(str(modifData))
         except Exception as e:
             print(f"Terjadi kesalahan: {e}")
 
     def resetData(self):
         try:
-            self.dataBaru = int(0)
-            self.modifData = self.bacaData(self.dataBaru)
-            self.lineEdit.setText(str(self.modifData))
+            dataBaru = int(0)
+            modifData = self.bacaData(dataBaru)
+            self.ui.lineEdit.setText(str(modifData))
             sleep(1)
         except Exception as e:
             print(f"Terjadi kesalahan: {e}")
@@ -50,9 +47,9 @@ class modbusController():
 
     def updateData(self):
         while True:
-            self.dataLama = self.bacaData(0)
-            self.lineEdit.setText(str(self.dataLama))
-            self.plot(self.dataLama)
+            dataLama = self.bacaData(0)
+            self.ui.lineEdit.setText(str(dataLama))
+            self.plot(dataLama)
 
     def plot(self):
         self.ax.clear()

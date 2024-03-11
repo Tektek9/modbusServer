@@ -1,6 +1,6 @@
 from PyQt5 import QtWidgets
 import sys
-from controller import modbusController
+from app.controller import modbusController
     
 def main():
     app = QtWidgets.QApplication(sys.argv)
