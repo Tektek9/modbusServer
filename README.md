@@ -8,6 +8,7 @@ Note: ONPROGRESS
 
 Struktur folder setelah diinstall (BELUM DIUPDATE)
 ```
+.
 ├── app.py
 ├── config.ini
 ├── docker
