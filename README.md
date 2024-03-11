@@ -6,7 +6,7 @@ Project Modbus Server
 
 Note: ONPROGRESS
 
-Struktur folder setelah diinstall (BELUM DIUPDATE)
+Struktur folder setelah diinstall
 ```
 .
 ├── app.py
