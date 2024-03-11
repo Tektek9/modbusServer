@@ -5,9 +5,8 @@ from threading import Thread
 
 class modbusController():
     def __init__(self, MainWindow):
-        self.address = ''
         self.client = ModbusClient(host='127.0.0.1', port=9999, auto_open=True)
-        self.data = ''
+        self.address = ''
         self.MainWindow = MainWindow
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self.MainWindow)
@@ -24,7 +23,7 @@ class modbusController():
         else:
             return None
 
-    def kirimData(self):
+    def kirimData(self, ):
         try:
             dataBaru = int(self.ui.lineEdit_2.text())
             sleep(1)
@@ -42,8 +41,8 @@ class modbusController():
         except Exception as e:
             print(f"Terjadi kesalahan: {e}")
 
-    def tulisData(self):
-        self.client.write_single_register(self.address, self.value)
+    def tulisData(self, value):
+        self.client.write_single_register(self.address, value)
 
     def updateData(self):
         while True:
@@ -51,9 +50,9 @@ class modbusController():
             self.ui.lineEdit.setText(str(dataLama))
             self.plot(dataLama)
 
-    def plot(self):
+    def plot(self, data):
         self.ax.clear()
-        self.ax.plot([0, 1, 2], [self.data, self.data + 10, self.data - 5])
+        self.ax.plot([0, 1, 2], [data, data + 10, data - 5])
         self.ax.set_xlabel('X Label')
         self.ax.set_ylabel('Y Label')
         self.canvas.draw()
