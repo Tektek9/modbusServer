@@ -78,7 +78,7 @@ pip install -r requirements.txt
 
 Jalankan Program
 ```
-python app.py
+python main.py
 ```
 <br />
 <p align="center">Prototype Desain Program</p>
