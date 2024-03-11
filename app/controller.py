@@ -1,5 +1,6 @@
 from time import sleep
 from pyModbusTCP.client import ModbusClient
+import matplotlib.pyplot as plt
 from app.view import Ui_MainWindow
 from threading import Thread
 
@@ -51,9 +52,13 @@ class modbusController():
             self.ui.lineEdit.setText(str(dataLama))
             self.plot(dataLama)
 
-    def plot(self, data):
+    # def plot(self, data):
+    def plot(self):
+        data = 5
+        self.fig, self.ax = plt.subplots()
+        self.canvas = self.fig.canvas
         self.ax.clear()
-        self.ax.plot([0, 1, 2], [data, data + 10, data - 5])
+        self.ax.plot([0, 1, 2], [int(data), int(data) + 10, int(data) - 5])
         self.ax.set_xlabel('X Label')
         self.ax.set_ylabel('Y Label')
         self.canvas.draw()
