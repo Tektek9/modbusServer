@@ -10,17 +10,21 @@ Struktur folder setelah diinstall
 ```
 .
 ├── app
+│   ├── controller.py
+│   ├── __pycache__
+│   │   ├── controller.cpython-311.pyc
+│   │   └── view.cpython-311.pyc
+│   └── view.py
 ├── config
 │   ├── config.ini
 │   ├── funct.conf
-│   ├── secret.txt
+│   ├── inventory.ini
+│   ├── secret.key
 │   └── var.conf
-├── controller.py
 ├── docker
 │   ├── docker-compose.yml
 │   ├── Dockerfile
 │   └── requirements.txt
-├── inventory.ini
 ├── main.py
 ├── modbus
 │   ├── modbusServer.yml
@@ -28,12 +32,8 @@ Struktur folder setelah diinstall
 │   └── stopmodbusServer.yml
 ├── modbusInstaller.sh
 ├── modbusServer.sh
-├── __pycache__
-│   ├── controller.cpython-311.pyc
-│   └── view.cpython-311.pyc
 ├── README.md
-├── requirements.txt
-└── view.py
+└── requirements.txt
 ```
 <br />
 
