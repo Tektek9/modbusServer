@@ -9,18 +9,17 @@ Note: ONPROGRESS
 Struktur folder setelah diinstall
 ```
 .
-├── config.ini
 ├── app
-|   ├── __pycache__
-│   |   ├── controller.cpython-311.pyc
-│   |   └── view.cpython-311.pyc
-|   ├── controller.py
-|   └── view.py
+├── config
+│   ├── config.ini
+│   ├── funct.conf
+│   ├── secret.txt
+│   └── var.conf
+├── controller.py
 ├── docker
 │   ├── docker-compose.yml
 │   ├── Dockerfile
 │   └── requirements.txt
-├── funct.conf
 ├── inventory.ini
 ├── main.py
 ├── modbus
@@ -29,9 +28,12 @@ Struktur folder setelah diinstall
 │   └── stopmodbusServer.yml
 ├── modbusInstaller.sh
 ├── modbusServer.sh
+├── __pycache__
+│   ├── controller.cpython-311.pyc
+│   └── view.cpython-311.pyc
 ├── README.md
 ├── requirements.txt
-└── secret.txt
+└── view.py
 ```
 <br />
 
