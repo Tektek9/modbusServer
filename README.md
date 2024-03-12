@@ -9,13 +9,17 @@ Note: ONPROGRESS
 Struktur folder setelah diinstall
 ```
 .
-├── config.ini
+├── app
+├── config
+│   ├── config.ini
+│   ├── funct.conf
+│   ├── secret.txt
+│   └── var.conf
 ├── controller.py
 ├── docker
 │   ├── docker-compose.yml
 │   ├── Dockerfile
 │   └── requirements.txt
-├── funct.conf
 ├── inventory.ini
 ├── main.py
 ├── modbus
@@ -29,8 +33,6 @@ Struktur folder setelah diinstall
 │   └── view.cpython-311.pyc
 ├── README.md
 ├── requirements.txt
-├── secret.txt
-├── var.conf
 └── view.py
 ```
 <br />
