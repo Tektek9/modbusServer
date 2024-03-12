@@ -72,42 +72,42 @@ elif [[ "$1" == "-h" ]] || [[ "$1" == "--help" ]] || [[ "$1" == "-c" ]] || [[ "$
         if [ -z "$(echo "$cekdoc")" ]; then
           centosDocker
         else
-          cd .. && echo "Docker berhasil diinstal" && echo "$dpsa"
+          echo "Docker berhasil diinstal"
         fi
       elif [[ "$osINFO" =~ "Debian" ]]; then
         debianDocker
         if [ -z "$(echo "$cekdoc")" ]; then
           debianDocker
         else
-          cd .. && echo "Docker berhasil diinstal"
+          echo "Docker berhasil diinstal"
         fi
       elif [[ "$osINFO" =~ "Fedora" ]]; then
         fedoraDocker
         if [ -z "$(echo "$cekdoc")" ]; then
           fedoraDocker
         else
-          cd .. && echo "Docker berhasil diinstal"
+          echo "Docker berhasil diinstal"
         fi
       elif [[ "$osINFO" =~ "Red Hat" ]]; then
         rhelDocker
         if [ -z "$(echo "$cekdoc")k" ]; then
           rhelDocker
         else
-          cd .. && echo "Docker berhasil diinstal"
+          echo "Docker berhasil diinstal"
         fi
       elif [[ "$osINFO" =~ "SUSE" ]] || [[ "$osINFO" =~ "openSUSE" ]]; then
         slesDocker
         if [ -z "$(echo "$cekdoc")" ]; then
           slesDocker
         else
-          cd .. && echo "Docker berhasil diinstal"
+          echo "Docker berhasil diinstal"
         fi
       elif [[ "$osINFO" =~ "Ubuntu" ]]; then
         ubuntuDocker
         if [ -z "$(echo "$cekdoc")" ]; then
           ubuntuDocker
         else
-          cd .. && echo "Docker berhasil diinstal"
+          echo "Docker berhasil diinstal"
         fi
       elif [[ "$osINFO" =~ "Raspbian" ]]; then
         raspiDocker
