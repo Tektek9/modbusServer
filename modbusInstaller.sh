@@ -1,46 +1,6 @@
 #!/bin/bash
 
-source var.conf
-
-mds="modbusServer"
-mts="Modbus TCP Server"
-dc="docker"
-f="modbus"
-mb="Membuat"
-nm="ansible"
-Fi="file inventory"
-p="playbook"
-
-image="$pkg1"
-docbin="$pkg2"
-osINFO=$(eval "$check1")
-dpkgconf=$(eval "$check2")
-ans=$(eval "$check3")
-dcom=$(eval "$check4")
-cekdoc=$(eval "$check5")
-dpsa=$(eval "$check6" 2> /dev/null)
-distro=$(eval "$check7")
-psaux=$(eval "$check8")
-psdocker=$(eval "$check9")
-finish=$(eval "$check10")
-df="$file1"
-com="$file2"
-req="$file3"
-invenFile="$file4"
-mServeryml="$file5"
-mServersh="$file9"
-rmodServer="$file6"
-smodServer="$file7"
-mServerpy="$file8"
-rcmodServer="$file10"
-scmodServer="$file11"
-modIns="$file12"
-currUser="$user"
-passwd="$passwd"
-host="$ip"
-modport="$mport"
-newport="$nport"
-locpy="$pyloc"
+source config/var.conf
 
 if [[ "$#" -lt 1 ]]; then
     echo -e "\nUntuk bantuan\n\n  ./$modIns -h\n  atau\n  ./$modIns --help"
