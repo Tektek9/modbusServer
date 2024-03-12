@@ -1,8 +1,6 @@
 #!/bin/bash
 
-source funct.conf
-source config.ini
-source secret.txt
+source var.conf
 
 mds="modbusServer"
 mts="Modbus TCP Server"
