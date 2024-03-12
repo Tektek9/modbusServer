@@ -19,7 +19,7 @@ Struktur folder setelah diinstall
 │   ├── config.ini
 │   ├── funct.conf
 │   ├── inventory.ini
-│   ├── secret.txt
+│   ├── secret.key
 │   └── var.conf
 ├── docker
 │   ├── docker-compose.yml
