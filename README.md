@@ -18,13 +18,13 @@ Struktur folder setelah diinstall
 ├── config
 │   ├── config.ini
 │   ├── funct.conf
+│   ├── inventory.ini
 │   ├── secret.txt
 │   └── var.conf
 ├── docker
 │   ├── docker-compose.yml
 │   ├── Dockerfile
 │   └── requirements.txt
-├── inventory.ini
 ├── main.py
 ├── modbus
 │   ├── modbusServer.yml
