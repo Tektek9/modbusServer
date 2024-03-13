@@ -8,6 +8,7 @@ class modbusController():
     def __init__(self, MainWindow):
         self.host = '127.0.0.1'
         self.port = 9999
+        self.address = ''
         self.client = ModbusClient(host=self.host, port=self.port, auto_open=True)
         self.MainWindow = MainWindow
         self.ui = Ui_MainWindow()
