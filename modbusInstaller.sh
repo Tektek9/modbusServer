@@ -123,11 +123,11 @@ elif [[ "$1" == "-h" ]] || [[ "$1" == "--help" ]] || [[ "$1" == "-c" ]] || [[ "$
     else
       cd ..
       if [ "$currUser" == "root" ]; then
-        becomeUsr="some_user"
+        becomeUsr="root"
         invenCreate "$mb" "$Fi" "$invenFile" "$mds" "$becomeUsr" "$passwd" "$locpy"
         echo "$invenFile berhasil dibuat"
       else 
-        becomeUsr="root"
+        becomeUsr="some_user"
         invenCreate "$mb" "$Fi" "$invenFile" "$mds" "$becomeUsr" "$passwd" "$locpy"
         echo "$invenFile berhasil dibuat"
       fi
